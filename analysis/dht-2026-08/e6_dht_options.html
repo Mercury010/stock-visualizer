@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>DHT Options Overlay — Merit E6</title>
+<style>
+@font-face { font-family: 'Noto Sans'; src: url('fonts/NotoSans-300.woff2'); font-weight: 300; }
+@font-face { font-family: 'Noto Sans'; src: url('fonts/NotoSans-400.woff2'); font-weight: 400; }
+@font-face { font-family: 'Noto Sans'; src: url('fonts/NotoSans-700.woff2'); font-weight: 700; }
+@font-face { font-family: 'Noto Sans'; src: url('fonts/NotoSans-800.woff2'); font-weight: 800; }
+:root {
+  --royal: #0001FF;  --midnight: #000041;  --black: #000000;
+  --red: #B9444A;  --orange: #D46B2A;  --violet: #544D84;
+  --blue-grey: #3B4557;  --cool-grey: #9AA2A5;  --light-grey: #DDDDDD;
+  --grad-45: linear-gradient(45deg, var(--midnight), var(--royal));
+}
+@page { size: A4; margin: 13mm 15mm 15mm 15mm; }
+* { box-sizing: border-box; }
+body { font-family: 'Noto Sans', Arial, sans-serif; font-weight: 400; color: var(--black);
+  text-align: left; line-height: 1.5; letter-spacing: 0; margin: 0; font-size: 9.6pt; }
+h1 { color: #fff; font-size: 19pt; font-weight: 800; margin: 0 0 1mm 0; line-height: 1.2; }
+h2 { font-size: 14.5pt; margin: 4mm 0 2.5mm 0; border-left: 3.5mm solid var(--royal); padding-left: 3.5mm; color: var(--midnight); font-weight: 800; line-height: 1.25; }
+h3 { font-size: 11pt; margin: 3.5mm 0 1.6mm 0; color: var(--royal); font-weight: 700; break-after: avoid; }
+p { margin: 0 0 2.2mm 0; }
+strong { font-weight: 700; }
+.section { page-break-before: always; }
+.keep { break-inside: avoid; }
+table { border-collapse: collapse; width: 100%; font-size: 8.0pt; margin: 1.2mm 0 0.8mm 0; break-inside: avoid; }
+thead th { background: var(--midnight); color: #fff; font-weight: 700; text-align: left;
+  padding: 1.4mm 2.2mm; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+tbody td { padding: 0.95mm 2mm; border-bottom: 0.3pt solid var(--light-grey); vertical-align: top; }
+tbody tr:nth-child(even) td { background: #F4F4F6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+td.num, th.num { text-align: right; }
+.up { color: var(--royal); font-weight: 700; }
+.down { color: var(--red); font-weight: 700; }
+.caution { color: var(--orange); font-weight: 700; }
+.caption { font-size: 7.6pt; color: var(--blue-grey); font-weight: 700; margin: 2.5mm 0 0.6mm 0; }
+.source { font-size: 7.2pt; color: var(--cool-grey); margin: 0.6mm 0 2.5mm 0; }
+.figimg { width: 100%; max-width: 100%; margin: 0.5mm 0; }
+.tagchip { display: inline-block; font-size: 6.8pt; font-weight: 700; color: #fff; background: var(--blue-grey);
+  padding: 0.2mm 1.6mm; border-radius: 1mm; vertical-align: middle;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.tag-ibkr { background: var(--royal); } .tag-co { background: var(--midnight); }
+.tag-web { background: var(--orange); } .tag-est { background: var(--violet); }
+.panel { background: #F4F4F6; border-left: 1.2mm solid var(--royal); padding: 2.5mm 3.5mm; margin: 2mm 0;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; break-inside: avoid; }
+.panel.warn { border-left-color: var(--orange); }
+.panel.neg { border-left-color: var(--red); }
+.hero { background: var(--grad-45); color: #fff; padding: 6mm 7mm 5.5mm 7mm; margin: 0 0 3.5mm 0;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.hero .brand { font-size: 10.5pt; font-weight: 800; margin-bottom: 3.5mm; }
+.hero .brand small { font-weight: 300; color: #C9CEF5; margin-left: 2.5mm; font-size: 7.5pt; }
+.hero .sub { color: #DDE1FA; font-weight: 300; font-size: 10.5pt; max-width: 165mm; }
+.hero .meta { color: #DDE1FA; font-size: 8.2pt; margin-top: 4mm; }
+.hero .meta b { color: #fff; }
+.kpi-row { display: flex; gap: 2.5mm; margin: 2mm 0; break-inside: avoid; }
+.kpi { flex: 1; background: #F4F4F6; padding: 2mm 2.5mm; border-top: 1mm solid var(--royal);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.kpi .v { font-size: 12.5pt; font-weight: 800; color: var(--midnight); line-height: 1.15; }
+.kpi .l { font-size: 7pt; color: var(--blue-grey); }
+.kpi.red-b { border-top-color: var(--red); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="brand">MERIT SECURITIES<small>Trusted to evolve</small></div>
+  <h1>E6 Options Overlay: DHT Holdings</h1>
+  <div class="sub">Μετάφραση του E1 συμπεράσματος (66/100 — HOLD / συσσώρευση σε διορθώσεις) σε συγκεκριμένες δομές παραγώγων, με τη μεταβλητότητα στο φθηνότερο σημείο του εξαμήνου και τρία events μπροστά: αποτελέσματα Q3, ex-dividend, Ορμούζ.</div>
+  <div class="meta"><b>NYSE: DHT</b> $18,70 (−2,45% ενδοσυνεδριακά 26/08/2026, bid/ask 18,70/18,71) · Οπτική: <b>Neutral-Bullish</b> (E1: 66/100) · IV 39,9% — 3,1ο εκατοστημόριο 26 εβδομάδων · Σύνταξη: C. — Merit Research Desk</div>
+</div>
+
+<h2>1. Αξιολόγηση Μεταβλητότητας &amp; Ημερολόγιο</h2>
+
+<p class="caption">Πίνακας 1 — Volatility dashboard (live, 26/08/2026)</p>
+<table>
+<thead><tr><th>Μέγεθος</th><th class="num">Τιμή</th><th>Ανάγνωση</th></tr></thead>
+<tbody>
+<tr><td>IV underlying (annualized) <span class="tagchip tag-ibkr">IBKR</span></td><td class="num">39,9%</td><td>Έπεσε από 40,6% χθες — φθηνότερη κι άλλο</td></tr>
+<tr><td>HV 30 ημερών (realized)</td><td class="num">40,5%</td><td>IV − HV ≈ <strong>−0,6 μ.β.: μηδενικό/αρνητικό variance premium</strong></td></tr>
+<tr><td>IV percentile 13 εβδ. / 26 εβδ. / 52 εβδ.</td><td class="num">6,3% / <strong>3,1%</strong> / 45,4%</td><td>Σχεδόν το φθηνότερο IV του εξαμήνου· μεσαίο σε ετήσια βάση (το H1 ήταν πολεμικό)</td></tr>
+<tr><td>Όγκος options (μ.ο. ημέρας)</td><td class="num">25.441 calls / 1.603 puts</td><td>Ροή 15,9:1 υπέρ calls — το πλήθος αγοράζει upside, κανείς δεν αγοράζει προστασία</td></tr>
+<tr><td>Term structure ATM</td><td class="num">~40% Sep → ~42% Dec</td><td>Ήπια ανοδική — το Q4 event risk τιμολογείται μετρημένα</td></tr>
+<tr><td>Skew</td><td class="num">Call-wing smile</td><td>Sep 21C 44% έναντι ATM 40% — τα OTM calls πιο ακριβά από τα OTM puts: <strong>η προστασία είναι το φθηνό πόδι</strong></td></tr>
+</tbody>
+</table>
+
+<div class="panel warn">
+<strong>Το δομικό κενό του ημερολογίου που πρέπει να ξέρεις πριν διαλέξεις λήξη:</strong> Δεν υπάρχει λήξη Νοεμβρίου. Η σειρά είναι Sep 18 → Oct 16 → <strong>Dec 18</strong>. Τα αποτελέσματα Q3 (~28/10) και το ex-dividend Q3 (~μέσα Νοεμβρίου, εκτίμηση C. $1,00–1,20· options-implied ~$0,85–0,90 από put-call parity) πέφτουν <em>ανάμεσα</em> στην Oct και τη Dec λήξη. Άρα: η Oct λήγει «τυφλή» πριν από όλα τα events — <strong>η Dec '26 είναι η λήξη-γεγονός</strong> και σε αυτήν χτίζονται όλες οι κύριες δομές. Υπενθύμιση μηχανικής: τα αμερικανικά options δεν προσαρμόζονται για τακτικά μερίσματα — ο κάτοχος put ωφελείται από την πτώση του ex-div, ενώ ο πωλητής ITM call κινδυνεύει με <strong>πρόωρη άσκηση την παραμονή του ex-div</strong> όταν το μέρισμα υπερβαίνει την εναπομένουσα χρονική αξία (με μέρισμα ~$1, ο κίνδυνος είναι πραγματικός).
+</div>
+
+<h2>2. Options Chain Snapshot</h2>
+
+<p class="caption">Πίνακας 2 — Κρίσιμα strikes (live quotes 26/08/2026, spot $18,70)</p>
+<table>
+<thead><tr><th>Συμβόλαιο</th><th class="num">Bid</th><th class="num">Ask</th><th class="num">Mid</th><th class="num">IV</th><th class="num">OI</th><th class="num">Όγκος</th><th class="num">Delta*</th></tr></thead>
+<tbody>
+<tr><td>Sep 18 '26 — 17 Put</td><td class="num">0,15</td><td class="num">0,25</td><td class="num">0,20</td><td class="num">43,4%</td><td class="num">1.129</td><td class="num">42</td><td class="num">−0,17</td></tr>
+<tr><td>Sep 18 '26 — 18 Put</td><td class="num">0,40</td><td class="num">0,50</td><td class="num">0,45</td><td class="num">41,2%</td><td class="num">1.321</td><td class="num">321</td><td class="num">−0,33</td></tr>
+<tr><td>Sep 18 '26 — 19 Call</td><td class="num">0,55</td><td class="num">0,70</td><td class="num">0,625</td><td class="num">39,2%</td><td class="num">2.257</td><td class="num">371</td><td class="num">+0,44</td></tr>
+<tr><td>Sep 18 '26 — 20 Call</td><td class="num">0,25</td><td class="num">0,30</td><td class="num">0,275</td><td class="num">39,8%</td><td class="num"><strong>11.938</strong></td><td class="num">283</td><td class="num">+0,27</td></tr>
+<tr><td>Sep 18 '26 — 21 Call</td><td class="num">0,15</td><td class="num">0,20</td><td class="num">0,175</td><td class="num">44,2%</td><td class="num"><strong>15.327</strong></td><td class="num">163</td><td class="num">+0,17</td></tr>
+<tr><td><strong>Dec 18 '26 — 15 Put</strong></td><td class="num">0,50</td><td class="num">0,70</td><td class="num">0,60</td><td class="num">46,0%</td><td class="num">282</td><td class="num">0</td><td class="num">−0,21</td></tr>
+<tr><td><strong>Dec 18 '26 — 16 Put</strong></td><td class="num">0,80</td><td class="num">0,95</td><td class="num">0,875</td><td class="num">44,5%</td><td class="num">44</td><td class="num">13</td><td class="num">−0,28</td></tr>
+<tr><td><strong>Dec 18 '26 — 17 Put</strong></td><td class="num">1,15</td><td class="num">1,35</td><td class="num">1,25</td><td class="num">43,8%</td><td class="num">104</td><td class="num">0</td><td class="num">−0,37</td></tr>
+<tr><td><strong>Dec 18 '26 — 18 Put</strong></td><td class="num">1,60</td><td class="num">1,80</td><td class="num">1,70</td><td class="num">42,3%</td><td class="num">521</td><td class="num">66</td><td class="num">−0,46</td></tr>
+<tr><td>Dec 18 '26 — 19 Put</td><td class="num">2,05</td><td class="num">2,65</td><td class="num">2,35</td><td class="num">41,2%</td><td class="num">1.916</td><td class="num">0</td><td class="num">−0,54</td></tr>
+<tr><td>Dec 18 '26 — 19 Call</td><td class="num">1,25</td><td class="num">1,55</td><td class="num">1,40</td><td class="num">41,3%</td><td class="num">109</td><td class="num">0</td><td class="num">+0,44</td></tr>
+<tr><td><strong>Dec 18 '26 — 20 Call</strong></td><td class="num">0,90</td><td class="num">1,10</td><td class="num">1,00</td><td class="num">42,1%</td><td class="num">479</td><td class="num">3</td><td class="num">+0,35</td></tr>
+<tr><td><strong>Dec 18 '26 — 21 Call</strong></td><td class="num">0,65</td><td class="num">0,85</td><td class="num">0,75</td><td class="num">41,8%</td><td class="num">101</td><td class="num">0</td><td class="num">+0,28</td></tr>
+<tr><td>Dec 18 '26 — 22 Call</td><td class="num">0,45</td><td class="num">0,65</td><td class="num">0,55</td><td class="num">43,1%</td><td class="num">93</td><td class="num">0</td><td class="num">+0,22</td></tr>
+<tr><td>Jan 15 '27 — 17 Put</td><td class="num">1,30</td><td class="num">1,50</td><td class="num">1,40</td><td class="num">43,1%</td><td class="num">310</td><td class="num">9</td><td class="num">−0,37</td></tr>
+<tr><td>Jan 15 '27 — 18 Put</td><td class="num">1,80</td><td class="num">1,95</td><td class="num">1,875</td><td class="num">42,2%</td><td class="num">53</td><td class="num">0</td><td class="num">−0,46</td></tr>
+<tr><td>Jan 15 '27 — 20 Call</td><td class="num">1,00</td><td class="num">1,25</td><td class="num">1,125</td><td class="num">41,5%</td><td class="num"><strong>6.216</strong></td><td class="num">10</td><td class="num">+0,38</td></tr>
+<tr><td>Jan 15 '27 — 22 Call</td><td class="num">0,55</td><td class="num">0,75</td><td class="num">0,65</td><td class="num">43,1%</td><td class="num">3.086</td><td class="num">0</td><td class="num">+0,25</td></tr>
+</tbody>
+</table>
+<p class="source">Πηγή: IBKR live snapshots 26/08/2026 <span class="tagchip tag-ibkr">IBKR</span>. *Delta: υπολογισμός C. (Black-76 σε forward καθαρό από εκτιμώμενο μέρισμα $1,10). <strong>Ρευστότητα:</strong> spreads 8–15% του mid στα Dec strikes — εργάσιμα με <em>limit στο mid</em> και υπομονή, ποτέ market orders· τα bid/ask sizes (1.000+ συμβόλαια) δείχνουν επαρκές θεσμικό βάθος. <strong>Max pain σχόλιο:</strong> το Sep OI συγκεντρώνεται στα 20C/21C (27,3 χιλ. συμβόλαια) έναντι ~2,5 χιλ. σε puts — δομική «έλξη» προς τη ζώνη 19–20 στη λήξη Sep, και ταυτόχρονα ένδειξη ότι το retail έχει ήδη πληρώσει το upside.</p>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<h2>3. Προτεινόμενες Δομές</h2>
+
+<h3>3.1 Για υφιστάμενη θέση — ΚΥΡΙΑ: Collar Dec 17P / 20C (net debit ~$0,45)</h3>
+<div class="panel">
+<p><strong>Setup (ανά 100 μετοχές):</strong> Αγορά 1× DHT Dec 18 '26 17 Put @ ~1,35 (ask) + Πώληση 1× Dec 18 '26 20 Call @ ~0,90 (bid) → <strong>καθαρό κόστος ~$0,45</strong> (2,4% του spot· με limit στο mid: ~$0,25).</p>
+<p><strong>Μέγιστη ζημιά ως τη λήξη:</strong> −$1,05/μτχ ≈ <strong>−5,6%</strong> (πτώση ως το 17 + κόστος − μέρισμα ~1,10) — έναντι απεριόριστης της γυμνής μετοχής (το «peace shock» σενάριο προς NAV $15–16 καλύπτεται πλήρως).<br>
+<strong>Μέγιστο κέρδος:</strong> +$1,95/μτχ ≈ <strong>+10,4%</strong> στα ≥$20 (κεφαλαιακό +μέρισμα −κόστος).<br>
+<strong>Νεκρό σημείο:</strong> ~$18,05 στη λήξη (με το μέρισμα). <strong>Greeks θέσης (μετοχή+collar):</strong> delta ~+0,28, vega ~ουδέτερο, theta ελαφρώς αρνητικό.</p>
+<p><strong>Γιατί αυτή:</strong> Το E1 λέει «κράτα το μέρισμα, φοβήσου την ειρήνευση»· το skew λέει «τα puts είναι το φθηνό πόδι, τα calls το ακριβό» — ο collar αγοράζει το φθηνό και πουλά το ακριβό. Κόβεις το tail risk του Ορμούζ ουσιαστικά τζάμπα σε όρους carry (το αναμενόμενο μέρισμα υπερκαλύπτει το κόστος), θυσιάζοντας το upside πάνω από $20 — αποδεκτό όταν το consensus PT είναι $19,3–20,5 και το δικό μας stance είναι HOLD.</p>
+<p><strong>Προσοχή:</strong> αν η μετοχή ξεπεράσει το ~$20,5 πριν το ex-div Νοεμβρίου, το short 20C μπαίνει σε ζώνη πρόωρης άσκησης (θα «χάσεις» τη μετοχή στο 20 + κρατάς premium — αποδεκτό οικονομικά, αλλά φορολογικά/λειτουργικά θέλει επίγνωση). Roll trigger: μετοχή &gt;$20 πριν τα Q3 → roll το call σε Jan 22C (~χρεωστικό 0,45) για να ανοίξει το cap.</p>
+</div>
+
+<h3>3.2 Για υφιστάμενη θέση — εναλλακτική: σκέτο Protective Put Dec 17P (~$1,35)</h3>
+<p><strong>Πότε προτιμάται από τον collar:</strong> αν πιστεύεις ότι το Q3/Q4 μπορεί να φέρει νέο ράλι άνω των $20–21 (κλιμάκωση Ορμούζ) και δεν θέλεις οροφή. Κόστος 7,2% του spot για 114 ημέρες — ακριβό απόλυτα, αλλά: καλύπτεται ~κατά 80% από το αναμενόμενο μέρισμα, αγοράζεται σε IV 26εβδ χαμηλό, και καλύπτει τη λήξη-γεγονός. Μέγιστη ζημιά −10,4% (με μέρισμα)· breakeven ~$18,95. Φθηνότερη παραλλαγή: <strong>put spread Dec 17P/15P</strong> (αγορά 17P 1,35 − πώληση 15P 0,50 = 0,85): καλύπτει τη ζώνη 17→15 (το «peace dip» προς NAV) με 37% μικρότερο κόστος, αφήνει ακάλυπτο μόνο το ακραίο σενάριο &lt;$15.</p>
+
+<h3>3.3 Για νέο κεφάλαιο — ΚΥΡΙΑ: Cash-Secured Puts στη ζώνη συσσώρευσης του E1</h3>
+<div class="panel">
+<p>Το E1 όρισε ζώνη αγοράς $16,5–17,5. Αντί για limit order, <strong>πληρώσου για να περιμένεις</strong>:</p>
+<p><strong>Πώληση Dec 18 '26 18 Put @ $1,60</strong> (bid): απόδοση επί δεσμευμένου κεφαλαίου 8,9% σε 114 ημέρες ≈ <strong>28% ετησιοποιημένα</strong>· breakeven/τιμή κτήσης $16,40 (−12% από spot, μέσα στη ζώνη-στόχο). Delta −0,46 ≈ 54% πιθανότητα να λήξει άπρακτο.<br>
+<strong>Συντηρητικότερη: Πώληση Dec 17 Put @ $1,15</strong>: 6,8%/114ημ ≈ <strong>22% ετησιοποιημένα</strong>, κτήση $15,85 (−15%, ουσιαστικά στη ζώνη NAV).</p>
+<p><strong>Τα δύο αποτελέσματα είναι αμφότερα επιθυμητά:</strong> ή κρατάς premium με ~22–28% ετησιοποιημένη απόδοση, ή αγοράζεις την DHT στη ζώνη που ούτως ή άλλως ήθελες, με το premium ως έκπτωση. Κόστος ευκαιρίας: δεν εισπράττεις το μέρισμα Q3 όσο περιμένεις, και σε κατάρρευση (&lt;$14) αγοράζεις «ακριβά» έναντι της αγοράς — γι' αυτό μέγεθος θέσης = το κεφάλαιο που πραγματικά προόριζες για αγορά DHT, ποτέ παραπάνω. Cash-secured πάντα (18 × 100 = $1.800/συμβόλαιο δεσμευμένα), όχι margin.</p>
+</div>
+
+<h3>3.4 Εισοδηματικό overlay: Covered Call — με προσοχή στο ex-div</h3>
+<p><strong>Sep 20C @ $0,25</strong>: +1,3% σε 23 ημέρες (~21% ετησ.), cap +7,0% στα $20, λήγει πριν από όλα τα events — «καθαρό» premium χωρίς earnings risk. <strong>Dec 21C @ $0,65</strong>: +3,5% (~11% ετησ.) + μέρισμα + περιθώριο +12,3% ως το cap — αλλά κουβαλά τον κίνδυνο πρόωρης άσκησης προ ex-div και κόβει το call-wing που η ροή δείχνει περιζήτητο. Προτίμηση C.: αν θες premium, <strong>Sep 20C και επανεκτίμηση μετά τη λήξη</strong>· όχι συστηματικό call-selling πάνω σε χαρτί με διωνυμικό ανοδικό tail.</p>
+
+<h3>3.5 Κερδοσκοπική δομή μεταβλητότητας: Long Strangle Dec 16P/21C (~$1,80)</h3>
+<p>Το «καθαρό» παιχνίδι στη διωνυμικότητα του Ορμούζ χωρίς κατεύθυνση: αγορά Dec 16P (0,95) + Dec 21C (0,85) = $1,80 (9,6% του spot). Νεκρά σημεία $14,20 / $22,80 — χρειάζεται κίνηση ±20%+ ως τη λήξη (1σ στις 114 ημέρες ≈ ±22% με HV 40%). Δεν είναι φθηνό «λαχείο» — είναι δίκαια τιμολογημένο — αλλά με IV στο 3,1ο percentile 26 εβδομάδων, αγοράζεις vega στο φθηνότερο σημείο του εξαμήνου μπροστά από earnings + ex-div + γεωπολιτικό δίλημμα 60 ημερών. Exit plan: κλείσιμο στο πρώτο vol spike (στόχος +40–60% στο πακέτο), όχι διακράτηση ως τη λήξη όπου το theta κερδίζει. Μέγιστη ζημιά: όλο το premium. Μόνο για το κερδοσκοπικό βιβλίο, ≤1–2% χαρτοφυλακίου.</p>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section"></div>
+<h2>4. Σενάρια &amp; Διαχείριση Θέσης</h2>
+
+<div class="keep">
+<p class="caption">Διάγραμμα 1 — Προφίλ αποτελέσματος στη λήξη Dec '26</p>
+<img class="figimg" src="chart_e6.png" alt="Payoff">
+</div>
+<p class="source">Υπολογισμοί C. σε live quotes (συντηρητικές πλευρές bid/ask), με εκτιμώμενο μέρισμα Q3 $1,10. Αν το μέρισμα βγει $0,85 (options-implied), όλες οι καμπύλες μετοχής μετατοπίζονται −1,3% — τα συμπεράσματα δεν αλλάζουν.</p>
+
+<p class="caption">Πίνακας 3 — P&amp;L ανά σενάριο στη λήξη 18/12/2026 ($/μετοχή, με μέρισμα $1,10)</p>
+<table>
+<thead><tr><th>Τιμή DHT στη λήξη</th><th class="num">$14 (κατάρρευση)</th><th class="num">$16 (peace dip)</th><th class="num">$17</th><th class="num">$18,70 (αμετάβλητη)</th><th class="num">$20</th><th class="num">$22 (νέο ράλι)</th></tr></thead>
+<tbody>
+<tr><td>Μετοχή μόνο</td><td class="num down">−3,60 (−19%)</td><td class="num down">−1,60 (−9%)</td><td class="num down">−0,60</td><td class="num up">+1,10 (+6%)</td><td class="num up">+2,40 (+13%)</td><td class="num up">+4,40 (+24%)</td></tr>
+<tr><td>Μετοχή + 17P</td><td class="num down">−1,95 (−10%)</td><td class="num down">−1,95 (−10%)</td><td class="num down">−1,95</td><td class="num down">−0,25 (−1%)</td><td class="num up">+1,05 (+6%)</td><td class="num up">+3,05 (+16%)</td></tr>
+<tr><td>Collar 17P/20C</td><td class="num down">−1,05 (−6%)</td><td class="num down">−1,05 (−6%)</td><td class="num down">−1,05</td><td class="num up">+0,65 (+3%)</td><td class="num up">+1,95 (+10%)</td><td class="num up">+1,95 (+10%)</td></tr>
+<tr><td>CSP 18P (νέο κεφάλαιο, επί $18 cash)</td><td class="num down">−2,40 (−13%)</td><td class="num down">−0,40 (−2%)</td><td class="num up">+0,60</td><td class="num up">+1,60 (+9%)</td><td class="num up">+1,60 (+9%)</td><td class="num up">+1,60 (+9%)</td></tr>
+<tr><td>Covered call 21C</td><td class="num down">−2,95 (−16%)</td><td class="num down">−0,95 (−5%)</td><td class="num up">+0,05</td><td class="num up">+1,75 (+9%)</td><td class="num up">+3,05 (+16%)</td><td class="num up">+4,05 (+22%)</td></tr>
+<tr><td>Strangle 16P/21C (επί premium 1,80)</td><td class="num up">+0,20 (+11%)</td><td class="num down">−1,80 (−100%)</td><td class="num down">−1,80</td><td class="num down">−1,80 (−100%)</td><td class="num down">−0,80 (−44%)</td><td class="num up">−0,80→+0,20*</td></tr>
+</tbody>
+</table>
+<p class="source">*Strangle στα $22: −0,80· στα $24: +1,20. Ποσοστά επί spot $18,70 (CSP: επί δεσμευμένου κεφαλαίου· strangle: επί premium). Χωρίς προμήθειες. <span class="tagchip tag-est">C.</span></p>
+
+<p class="caption">Πίνακας 4 — Διαχείριση θέσης</p>
+<table>
+<thead><tr><th>Δομή</th><th>Είσοδος</th><th>Trigger προσαρμογής</th><th>Έξοδος</th></tr></thead>
+<tbody>
+<tr><td>Collar 17P/20C</td><td>Τώρα (limit στο mid: ~0,25 net) — η σημερινή −2,45% βοηθά το call leg λιγότερο· εναλλακτικά σε bounce &gt;$19</td><td>Μετοχή &gt;$20 προ Q3 → roll call σε Jan 22C· μετοχή &lt;$16,5 → πούλησε το 17P με κέρδος, κράτα short call</td><td>Λήξη Dec ή οριστική λύση Ορμούζ (κλείσιμο put, επανεκτίμηση όλης της θέσης)</td></tr>
+<tr><td>Protective put / put spread</td><td>Τώρα — IV 26εβδ. χαμηλό δεν κρατάει για πάντα</td><td>IV spike &gt;55% → πώληση μέρους της προστασίας με κέρδος vega</td><td>Μετά τα Q3 + ex-div, αξιολόγηση αν το 2027 χρειάζεται νέα κάλυψη (Apr '27)</td></tr>
+<tr><td>CSP 18P/17P</td><td>Τώρα ή κλιμακωτά (½ τώρα, ½ σε bounce που ανεβάζει τα put premiums)</td><td>Μετοχή &lt;$16 → ετοιμάσου για παραλαβή μετοχών (ο σκοπός της δομής)· roll down &amp; out μόνο αν άλλαξε η θεμελιώδης εικόνα</td><td>Λήξη· ή κλείσιμο στο 70–80% του premium αν έρθει νωρίς</td></tr>
+<tr><td>Strangle</td><td>Μόνο σε ημέρες χαμηλού IV (όπως σήμερα)</td><td>+40–60% στο πακέτο → κλείσιμο· −50% → κλείσιμο (πειθαρχία)</td><td>Το αργότερο 2 εβδομάδες προ λήξης (theta)</td></tr>
+</tbody>
+</table>
+
+<div class="panel neg">
+<strong>Κανόνες μεγέθους &amp; ρίσκου (Merit E6):</strong> (1) Συνολικό options premium at-risk ≤2–5% χαρτοφυλακίου. (2) CSP μόνο με πλήρη κάλυψη μετρητών και μόνο για κεφάλαιο που προοριζόταν για αγορά DHT. (3) Ποτέ market orders στα DHT options — limit στο mid, τα spreads είναι 8–15%. (4) Καμία γυμνή πώληση δικαιωμάτων. (5) Οι εκτιμήσεις μερίσματος είναι κρίσιμη παραδοχή των Dec δομών — αν η DHT εκπλήξει αρνητικά στο Q3, τα «carry» επιχειρήματα εξασθενούν αναλογικά.<br><br>
+⚠️ <strong>Τα παράγωγα χρηματοοικονομικά μέσα ενέχουν υψηλό κίνδυνο απώλειας — έως και του συνόλου του καταβληθέντος premium (long) ή σημαντικά μεγαλύτερη (short σκέλη). Επιβεβαίωσε τιμές/spreads στο τερματικό πριν από κάθε εντολή· τα quotes της ανάλυσης είναι στιγμιότυπο της 26/08/2026.</strong>
+</div>
+
+<p class="source" style="margin-top:4mm">
+Πηγές: Interactive Brokers live option chain &amp; snapshots 26/08/2026 (bid/ask, OI, IV, ροή) [VERIFIED]· υπολογισμοί C. (Black-76, forward καθαρό από εκτιμώμενο μέρισμα· δηλωμένες παραδοχές r=4%, div Q3 $1,10 est / $0,85–0,90 implied). Βασίζεται στα συμπεράσματα των DHT Deep-Dive E1 και E7 (26/08/2026).<br><br>
+<em>Η ανάλυση αυτή έχει αποκλειστικά ενημερωτικό χαρακτήρα και δεν αποτελεί επενδυτική σύσταση κατά την έννοια του Ν. 4514/2018 (MiFID II) ούτε προτροπή για κατάρτιση συναλλαγών. Οι επενδύσεις σε κινητές αξίες και παράγωγα ενέχουν κίνδυνο απώλειας κεφαλαίου. Merit Securities SA — Μέλος του Χρηματιστηρίου Αθηνών, εποπτευόμενη από την Επιτροπή Κεφαλαιαγοράς.</em>
+</p>
+
+</body>
+</html>
