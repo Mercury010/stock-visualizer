@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>DHT Holdings — Merit Securities Deep-Dive</title>
+<style>
+@font-face { font-family: 'Noto Sans'; src: url('fonts/NotoSans-300.woff2'); font-weight: 300; }
+@font-face { font-family: 'Noto Sans'; src: url('fonts/NotoSans-400.woff2'); font-weight: 400; }
+@font-face { font-family: 'Noto Sans'; src: url('fonts/NotoSans-700.woff2'); font-weight: 700; }
+@font-face { font-family: 'Noto Sans'; src: url('fonts/NotoSans-800.woff2'); font-weight: 800; }
+
+:root {
+  --royal: #0001FF;  --midnight: #000041;  --black: #000000;
+  --red: #B9444A;  --orange: #D46B2A;  --violet: #544D84;
+  --blue-grey: #3B4557;  --cool-grey: #9AA2A5;  --light-grey: #DDDDDD;
+  --positive: var(--royal);  --negative: var(--red);  --caution: var(--orange);
+  --grad-45: linear-gradient(45deg, var(--midnight), var(--royal));
+}
+
+@page { size: A4; margin: 13mm 15mm 15mm 15mm; }
+@page :first { margin: 0; }
+
+* { box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans', Arial, sans-serif; font-weight: 400;
+  color: var(--black); text-align: left; line-height: 1.5;
+  letter-spacing: 0; margin: 0; font-size: 9.6pt;
+}
+h1, h2, h3 { color: var(--midnight); font-weight: 800; }
+h2 { font-size: 15pt; margin: 4mm 0 2.5mm 0; border-left: 3.5mm solid var(--royal); padding-left: 3.5mm; line-height: 1.25; }
+h3 { font-size: 11pt; margin: 3.5mm 0 1.6mm 0; color: var(--royal); font-weight: 700; }
+p { margin: 0 0 2.2mm 0; }
+strong { font-weight: 700; }
+.section { page-break-before: always; }
+.keep { break-inside: avoid; }
+
+table { border-collapse: collapse; width: 100%; font-size: 8.3pt; margin: 1.5mm 0 1mm 0; break-inside: avoid; }
+thead th { background: var(--midnight); color: #fff; font-weight: 700; text-align: left;
+  padding: 1.4mm 2.2mm; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+tbody td { padding: 1.15mm 2.2mm; border-bottom: 0.3pt solid var(--light-grey); vertical-align: top; }
+tbody tr:nth-child(even) td { background: #F4F4F6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+td.num, th.num { text-align: right; }
+.up { color: var(--positive); font-weight: 700; }
+.down { color: var(--negative); font-weight: 700; }
+.caution { color: var(--caution); font-weight: 700; }
+.caption { font-size: 7.6pt; color: var(--blue-grey); font-weight: 700; margin: 2.5mm 0 0.6mm 0; }
+.source { font-size: 7.2pt; color: var(--cool-grey); margin: 0.6mm 0 2.5mm 0; }
+.figimg { width: 100%; max-width: 100%; margin: 0.5mm 0; }
+
+.tagchip { display: inline-block; font-size: 6.8pt; font-weight: 700; color: #fff; background: var(--blue-grey);
+  padding: 0.2mm 1.6mm; border-radius: 1mm; vertical-align: middle;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.tag-ibkr { background: var(--royal); } .tag-co { background: var(--midnight); }
+.tag-web { background: var(--orange); } .tag-est { background: var(--violet); }
+
+.panel { background: #F4F4F6; border-left: 1.2mm solid var(--royal); padding: 2.5mm 3.5mm; margin: 2mm 0;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; break-inside: avoid; }
+.panel.warn { border-left-color: var(--orange); }
+.panel.neg { border-left-color: var(--red); }
+
+.kpi-row { display: flex; gap: 2.5mm; margin: 2mm 0; break-inside: avoid; }
+.kpi { flex: 1; background: #F4F4F6; padding: 2mm 2.5mm; border-top: 1mm solid var(--royal);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.kpi .v { font-size: 13pt; font-weight: 800; color: var(--midnight); line-height: 1.15; }
+.kpi .l { font-size: 7pt; color: var(--blue-grey); }
+.kpi.neg-b { border-top-color: var(--red); }
+.kpi.cau-b { border-top-color: var(--orange); }
+
+.footer-fix { position: fixed; bottom: 2.5mm; right: 0; left: 0; text-align: right;
+  font-size: 6.8pt; color: var(--cool-grey); padding-right: 4mm; }
+
+/* Cover */
+.cover { width: 210mm; height: 296mm; background: var(--grad-45); color: #fff;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  padding: 22mm 20mm; position: relative; page-break-after: always; }
+.cover .brand { font-size: 15pt; font-weight: 800; letter-spacing: 0; color: #fff; }
+.cover .brand small { display: block; font-size: 8pt; font-weight: 300; color: #C9CEF5; margin-top: 0.5mm; }
+.cover h1 { color: #fff; font-size: 31pt; font-weight: 800; line-height: 1.16; margin: 44mm 0 4mm 0; }
+.cover .subtitle { font-size: 13pt; font-weight: 300; color: #DDE1FA; max-width: 150mm; }
+.cover .meta { position: absolute; bottom: 24mm; left: 20mm; right: 20mm; font-size: 9.5pt; color: #DDE1FA; }
+.cover .meta b { color: #fff; }
+.cover .tabline { width: 34mm; height: 2.2mm; background: #fff; margin-bottom: 6mm; }
+.cover .conf { position: absolute; bottom: 12mm; left: 20mm; font-size: 7.5pt; color: #9AA2C5; }
+
+.scorebox { display: flex; gap: 3mm; align-items: stretch; margin: 2.5mm 0; break-inside: avoid; }
+.scorebig { background: var(--grad-45); color: #fff; padding: 4mm 6mm; text-align: left; min-width: 44mm;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.scorebig .n { font-size: 26pt; font-weight: 800; line-height: 1; }
+.scorebig .t { font-size: 8pt; font-weight: 300; color: #DDE1FA; margin-top: 1.5mm; }
+.verdict { flex: 1; background: #F4F4F6; padding: 3mm 4mm; border-top: 1mm solid var(--royal);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ COVER ═══════════════ -->
+<div class="cover">
+  <div class="brand">MERIT SECURITIES<small>Trusted to evolve</small></div>
+  <h1>DHT Holdings, Inc.<br>Deep-Dive Ανάλυση</h1>
+  <div class="tabline"></div>
+  <div class="subtitle">Ιστορικό ρεκόρ κερδοφορίας σε πολεμική αγορά VLCC — ποιότητα κορυφής, τιμή ύστερου κύκλου. Πλήρης θεμελιώδης, κλαδική και τεχνική αξιολόγηση, με όσα δεν φαίνονται με την πρώτη ματιά.</div>
+  <div class="meta">
+    <b>NYSE: DHT</b> · Crude Oil Tankers (VLCC) · Marshall Islands / Oslo<br>
+    Τιμή: <b>$19,25</b> (26/08/2026, IBKR) · Κεφαλαιοποίηση: <b>~$3,10 δισ.</b> · 52W: $10,06–$20,62 · Μερισμ. απόδοση (trailing): <b>12,7%</b><br>
+    Ημερομηνία ανάλυσης: <b>26 Αυγούστου 2026</b> · Σύνταξη: C. — Merit Securities Research Desk
+  </div>
+  <div class="conf">Εσωτερική χρήση / επαγγελματική ανάλυση · Δεν αποτελεί επενδυτική σύσταση (Ν. 4514/2018)</div>
+</div>
+
+<!-- ═══════════════ EXECUTIVE SUMMARY ═══════════════ -->
+<h2>1. Executive Summary</h2>
+
+<p><strong>Η DHT είναι ο ποιοτικότερος «καθαρός» VLCC owner του NYSE σε μια στιγμή που η αγορά του βρίσκεται σε ιστορική, πολεμικά τροφοδοτούμενη υπερ-έξαρση.</strong> Το Q2 2026 ήταν το ισχυρότερο τρίμηνο στην ιστορία της εταιρίας: καθαρά κέρδη $198,3 εκατ. ($1,23/μετοχή), EBITDA $231 εκατ., στόλος στα $126.700/ημέρα (spot $162.600/ημέρα) και μέρισμα-ρεκόρ <strong>$1,22/μετοχή</strong> — το 66ο συνεχόμενο τριμηνιαίο μέρισμα. Το εξάμηνο H1 2026 ($362,9 εκατ.) ξεπέρασε ήδη το καλύτερο <em>έτος</em> στην ιστορία της (2020: $266,3 εκατ.). Ο καταλύτης είναι ο πόλεμος ΗΠΑ/Ισραήλ–Ιράν (από 28/02/2026) και το κλείσιμο των Στενών του Ορμούζ, που έστειλε το TD3C στα ~$585.000/ημέρα (21/08) — τα υψηλότερα επίπεδα από την έναρξη καταγραφών Baltic.</p>
+
+<p><strong>Το δίδυμο εύρημα που δεν φαίνεται με την πρώτη ματιά:</strong> (α) η DHT έχει <em>υποαποδώσει</em> όλους τους peers στο 12μηνο (+66% έναντι +83% έως +136% για TNK/FRO/INSW/ECO) — είναι το χαμηλού βήτα, χαμηλής μόχλευσης «αμυντικό» χαρτί του κλάδου, με μερίσματα που ανεβάζουν τη συνολική απόδοση στο ~+87%· και (β) στα $19,25 η μετοχή διαπραγματεύεται πλέον <em>πάνω</em> από την εκτιμώμενη καθαρή αξία στόλου (NAV ~$15,0–17,0/μετοχή, P/NAV ~1,15–1,25×), σε μια αγορά όπου το 5ετές VLCC ($143 εκατ.) κοστίζει περισσότερο από νεότευκτο ($128,5 εκατ.) και τα prompt resales ($168 εκατ.) γράφουν το μεγαλύτερο premium έναντι νεότευκτου στα 60 χρόνια ιστορίας των supertankers (Clarksons). Το περιθώριο ασφαλείας έχει μετατοπιστεί από τα assets στο earnings stream — κλασικό χαρακτηριστικό ύστερου κύκλου, την ίδια στιγμή που το orderbook VLCC εκτοξεύθηκε στο ~35% του στόλου (ρεκόρ 60ετίας).</p>
+
+<div class="scorebox">
+  <div class="scorebig"><div class="n">66<span style="font-size:11pt;font-weight:300">/100</span></div><div class="t">Συνολικό E1 Multi-Factor Score<br>«Good» — θετική εικόνα, επιλεκτική είσοδος</div></div>
+  <div class="verdict"><strong>Άποψη (ορίζοντας 3–6 μηνών): HOLD / Συσσώρευση σε διορθώσεις.</strong> Η ποιότητα (ισολογισμός-φρούριο με μόχλευση 14,1%, breakeven $22.600/ημέρα, 100% payout, άψογο capital allocation) δικαιολογεί θέση· η τιμή όχι επιθετικό κυνήγι. Προτιμώμενη ζώνη εισόδου $16,5–17,5 (P/NAV ~1,0–1,05, mid-cycle απόδοση ~9–10%). Το Q3 είναι ήδη «κλειδωμένο» ισχυρό (58% των spot ημερών στα $152.700/ημέρα) — τα options υποτιμούν το επόμενο μέρισμα. Κύριος κίνδυνος: διπλωματική λύση στο Ορμούζ → βίαιη αποσυμπίεση του risk premium.</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="v">$1,22</div><div class="l">Μέρισμα Q2 2026 (καταβλήθηκε 24/08) — trailing 4Q: $2,45</div></div>
+  <div class="kpi"><div class="v">6,6×</div><div class="l">Trailing P/E (reported EPS $2,94) · 7,9× σε «ordinary» βάση</div></div>
+  <div class="kpi"><div class="v">14,1%</div><div class="l">Μόχλευση επί αγοραίων αξιών στόλου (30/06/2026)</div></div>
+  <div class="kpi cau-b"><div class="v">~1,2×</div><div class="l">P/NAV (εκτίμηση C.: NAV $15,0–17,0/μτχ)</div></div>
+  <div class="kpi neg-b"><div class="v">35%</div><div class="l">VLCC orderbook/στόλο — ρεκόρ· παραδόσεις 2027–2030</div></div>
+</div>
+
+<div class="panel">
+<strong>Το πιο σημαντικό υπέρ:</strong> Χρηματοοικονομική θωράκιση χωρίς αντίστοιχο στον κλάδο — καθαρός δανεισμός μόλις $11,9 εκατ./πλοίο, ρευστότητα $569 εκατ., cash breakeven $22.600/ημέρα· κάθε ημέρα spot στο Q3 έχει κλειδωθεί στο ~6,8× του breakeven. Η μερισματική μηχανή δουλεύει ακόμα και σε βαθιά ύφεση της ναυλαγοράς.<br>
+<strong>Το πιο σημαντικό κατά:</strong> Τα πάντα εδώ είναι συνάρτηση ενός γεωπολιτικού γεγονότος. Τα ton-miles VLCC είναι πραγματικά <span class="down">−14,5%</span> σε ετήσια βάση — το ράλι είναι risk premium και όχι όγκοι. Μια συμφωνία ΗΠΑ–Ιράν (το Ομάν ήδη μεσολαβεί) μπορεί να επαναφέρει τα rates από $585k προς $60–100k ταχύτατα — όπως έδειξε ο Μάιος 2026, όταν μόνο η <em>προσδοκία</em> εκεχειρίας τα έριξε κάτω από $100k σε μία εβδομάδα.
+</div>
+
+<p class="caption">Πίνακας 1 — Ταυτότητα &amp; βασικά μεγέθη</p>
+<table>
+<thead><tr><th>Στοιχείο</th><th>Τιμή</th><th>Στοιχείο</th><th>Τιμή</th></tr></thead>
+<tbody>
+<tr><td>Τιμή (26/08/2026) <span class="tagchip tag-ibkr">IBKR</span></td><td>$19,25 (52W: $10,06–$20,62)</td><td>Μετοχές σε κυκλοφορία (30/06)</td><td>161.235.573</td></tr>
+<tr><td>Κεφαλαιοποίηση / EV</td><td>~$3,10 δισ. / ~$3,38 δισ.</td><td>Στόλος</td><td>23 VLCC (~7,2 εκατ. dwt), μ.ο. ηλικίας ~9 έτη</td></tr>
+<tr><td>Καθαρός δανεισμός (30/06) <span class="tagchip tag-co">6-K</span></td><td>$273 εκατ. ($11,9 εκατ./πλοίο)</td><td>Ρευστότητα</td><td>$569 εκατ. (cash $161,7 + αχρησιμοποίητα RCF $407,5)</td></tr>
+<tr><td>Trailing EPS / DPS</td><td>$2,94 / $2,45</td><td>Consensus 2026E EPS <span class="tagchip tag-web">WEB</span></td><td>~$2,86 (αναθεωρημένο από $2,30)</td></tr>
+<tr><td>Μέση ημερ. αξία συναλλαγών (90ημ)</td><td>~$64 εκατ.</td><td>Consensus PT (6 αναλυτές) <span class="tagchip tag-web">WEB</span></td><td>~$19,3–20,5 (εύρος $19–23), «Moderate Buy»</td></tr>
+<tr><td>Επόμενα αποτελέσματα</td><td>Q3 2026: ~28/10/2026 (αναμ.)</td><td>Implied vol (ATM)</td><td>~40,7% — 4,7ο εκατοστημόριο 26 εβδομάδων (φθηνή)</td></tr>
+</tbody>
+</table>
+<p class="source">Πηγές: Interactive Brokers (live, 26/08/2026)· δελτία αποτελεσμάτων DHT Q2 2026 (05/08/2026, 6-K)· stockanalysis/WallStreetZen/Investing.com (consensus). Ετικέτες: <span class="tagchip tag-ibkr">IBKR</span> live αγορά · <span class="tagchip tag-co">6-K</span> εταιρικά δελτία/SEC · <span class="tagchip tag-web">WEB</span> δευτερογενείς πηγές · <span class="tagchip tag-est">C.</span> εκτίμηση/υπολογισμός C.</p>
+
+<!-- ═══════════════ SECTION 2 ═══════════════ -->
+<h2>2. Εταιρία &amp; Επιχειρηματικό Μοντέλο <span style="float:right;font-size:10pt;color:#3B4557">Βαθμός: 70/100 · Βάρος 14%</span></h2>
+
+<p>Η DHT Holdings είναι <strong>αμιγής (pure-play) πλοιοκτήτρια VLCC</strong> — η μόνη αμιγώς VLCC εισηγμένη στις ΗΠΑ μαζί με την Okeanis — με πλήρως καθετοποιημένο μοντέλο: εμπορική διαχείριση in-house (Μονακό, Όσλο, Σιγκαπούρη, Ινδία) και τεχνική διαχείριση 100% ιδιόκτητη μετά την πλήρη εξαγορά της Goodwood Ship Management (Απρίλιος 2025, +46,8% έναντι $6,1 εκατ.). Δεν συμμετέχει σε pools. Έσοδα: μείγμα spot (~50% των ημερών) και χρονοναυλώσεων σε «global energy companies» και «major oil companies» (οι αντισυμβαλλόμενοι δεν κατονομάζονται — βλ. §12).</p>
+
+<h3>2.1 Ο στόλος: ο νεότερος «καθαρός» VLCC στόλος του κλάδου</h3>
+<p>Μετά από επιθετική ανανέωση 2025–2026 (πώληση όλων των πλοίων του 2007 και όλων των κινεζικής ναυπήγησης, παραλαβή 4 νεότευκτων), ο στόλος αριθμεί <strong>23 VLCC / 7,16 εκατ. dwt</strong> με μέση ηλικία ~9 έτη έναντι ~12 του παγκόσμιου μέσου όρου, πλήρως εξοπλισμένος με scrubbers στα νεότερα/νεότευκτα πλοία. Ένα ακόμη νεότευκτο (DHT Oryx, Hanwha Ocean) παραδίδεται τον Αύγουστο 2028.</p>
+
+<p class="caption">Πίνακας 2 — Δομή στόλου (Αύγουστος 2026)</p>
+<table>
+<thead><tr><th>Ομάδα</th><th class="num">Πλοία</th><th>Μονάδες</th><th>Απασχόληση</th></tr></thead>
+<tbody>
+<tr><td>Νεότευκτα 2026 «Super Eco» (~320k dwt, scrubber, Tier III)</td><td class="num">4</td><td>Antelope, Addax, Gazelle, Impala</td><td>Antelope/Impala spot· Addax σε 5–7ετή Τ/C (αντικατέστησε την Gazelle κατά το yard upgrade)</td></tr>
+<tr><td>2018-built (HHI series + αγορές)</td><td class="num">6</td><td>Mustang, Bronco, Colt, Stallion, Appaloosa, Nokota</td><td>Appaloosa σε 7ετή T/C $41k + 50/50 profit share· λοιπά κυρίως spot</td></tr>
+<tr><td>2015–2016 HHI series + αγορές 2016</td><td class="num">8</td><td>Jaguar, Leopard, Lion, Panther, Puma, Tiger, Osprey, Harrier</td><td>Jaguar: 3ετής T/C $75k από 09/2026· Harrier: 5ετής $47,5k· λοιπά spot</td></tr>
+<tr><td>2011–2012 (ex-Samco/BW)</td><td class="num">5</td><td>Taiga, Opal, Sundarbans, Redwood, Amazon</td><td>Όλα κλειδωμένα σε 1ετείς T/C $90–109k/ημέρα (κορυφή αγοράς)</td></tr>
+<tr><td><strong>Σύνολο εν λειτουργία</strong></td><td class="num"><strong>23</strong></td><td colspan="2"><strong>+ 1 νεότευκτο (DHT Oryx, παράδοση 08/2028)</strong></td></tr>
+</tbody>
+</table>
+<p class="source">Πηγή: Δελτία DHT (6-K Q1/Q2 2026, fleet updates 01–07/2026)· ανασύνθεση από C. — τα per-vessel dwt/yard δευτερευόντων πλοίων από data providers. Πιθανή πρόσθετη εξαγορά 2018-built VLCC (δημοσίευμα 12/08/2026) — μη επιβεβαιωμένη, βλ. §12.</p>
+
+<h3>2.2 Moat &amp; ανταγωνιστική θέση</h3>
+<p>Η ωμή αλήθεια του κλάδου: <strong>δεν υπάρχει διαρθρωτικό moat στη μεταφορά αργού</strong> — το προϊόν είναι commodity και ο ναύλος καθορίζεται από την αγορά. Τα ανταγωνιστικά πλεονεκτήματα της DHT είναι λειτουργικά και χρηματοοικονομικά: (i) κόστος — cash breakeven $22.600/ημέρα, από τα χαμηλότερα του κλάδου· (ii) ποιότητα στόλου που περνά τα vetting των majors (κρίσιμο όσο το CII/ηλικία αποκλείει παλαιά πλοία από τους καλούς ναυλωτές)· (iii) ισολογισμός που επιτρέπει αντικυκλικές κινήσεις όταν οι ανταγωνιστές πιέζονται· (iv) φήμη/σχέσεις 66 συνεχόμενων τριμηνιαίων μερισμάτων. Moat rating: 4/10 — «narrow-to-none», αλλά με best-in-class εκτέλεση.</p>
+
+<div class="panel">
+<strong>Στρατηγική ανάγνωση (C.):</strong> Η DHT εκτέλεσε το 2024–2026 ένα σχεδόν τέλειο playbook κύκλου: παρήγγειλε 4 πλοία τον Φεβρουάριο 2024 στα $128,5 εκατ./μονάδα (σήμερα το resale αξίζει $168 εκατ. — κέρδος χαρτιού ~$160 εκατ. στο πρόγραμμα), πούλησε 6 παλαιά πλοία 2025–26 με συνολικά gains ~$147 εκατ. σε τιμές κορυφής, κλείδωσε 1ετείς ναυλώσεις $90–109k στα πέντε γηραιότερα πλοία ακριβώς στην κορύφωση, και απέφυγε νέο μεγάλο ordering («ένα μόνο πλοίο για το 2028»). Αυτό είναι το προφίλ διοίκησης που σέβεται τον κύκλο — και ένας από τους λόγους που το χαρτί δικαιούται premium ποιότητας.
+</div>
+
+<!-- ═══════════════ SECTION 3 ═══════════════ -->
+<h2>3. Q2 2026 &amp; Πρόσφατα Αποτελέσματα</h2>
+
+<p class="caption">Πίνακας 3 — Τριμηνιαία εξέλιξη (εταιρικά δελτία)</p>
+<table>
+<thead><tr><th>Μέγεθος</th><th class="num">Q2 2025</th><th class="num">Q3 2025</th><th class="num">Q4 2025</th><th class="num">Q1 2026</th><th class="num">Q2 2026</th></tr></thead>
+<tbody>
+<tr><td>Έσοδα ναυλώσεων ($ εκ.)</td><td class="num">127,9</td><td class="num">—</td><td class="num">143,9</td><td class="num">186,3</td><td class="num"><strong>284,8</strong></td></tr>
+<tr><td>Adjusted EBITDA ($ εκ.)</td><td class="num">69,0</td><td class="num">—</td><td class="num">95,3</td><td class="num">133,3</td><td class="num"><strong>231,0</strong></td></tr>
+<tr><td>Καθαρά κέρδη ($ εκ.)</td><td class="num">56,0</td><td class="num">44,8</td><td class="num">66,1</td><td class="num">164,5*</td><td class="num"><strong>198,3</strong></td></tr>
+<tr><td>EPS (basic)</td><td class="num">0,35</td><td class="num">0,28</td><td class="num">0,41</td><td class="num">1,02</td><td class="num"><strong>1,23</strong></td></tr>
+<tr><td>«Ordinary» EPS = Μέρισμα</td><td class="num">0,24</td><td class="num">0,18</td><td class="num">0,41</td><td class="num">0,64</td><td class="num"><strong>1,22</strong></td></tr>
+<tr><td>TCE στόλου ($/ημέρα)</td><td class="num">46.300</td><td class="num">40.500</td><td class="num">60.300</td><td class="num">78.800</td><td class="num"><strong>126.700</strong></td></tr>
+<tr><td>— εκ των οποίων spot</td><td class="num">48.700</td><td class="num">38.700</td><td class="num">69.500</td><td class="num">91.700</td><td class="num"><strong>162.600</strong></td></tr>
+<tr><td>Ημέρες εσόδων (spot)</td><td class="num">—</td><td class="num">1.951 (1.068)</td><td class="num">—</td><td class="num">1.994 (1.152)</td><td class="num">2.012 (1.007)</td></tr>
+</tbody>
+</table>
+<p class="source">Πηγή: Δελτία DHT 6-K (05/08/2026, 05/05/2026, 04/02/2026)· *Q1 2026 περιλαμβάνει $60,0 εκατ. κέρδος πώλησης DHT Europe/China — εξαιρέθηκε από το «ordinary» και δεν διανεμήθηκε. Verification: το μέρισμα $1,22 και $0,64 επιβεβαιώθηκαν ανεξάρτητα από IBKR corporate actions· οι εσωτερικοί αριθμητικοί έλεγχοι (ημέρες × TCE ≈ έσοδα, EPS × μετοχές ≈ κέρδη) συνεπείς.</p>
+
+<h3>3.1 Τι σημαίνει το $1,22 — και τι κρύβει</h3>
+<p>Το μέρισμα είναι <strong>100% «τακτικό»</strong>: η πολιτική της DHT (από 09/2022) διανέμει το 100% του «ordinary net income» — κέρδη <em>εξαιρουμένων</em> των κερδών πώλησης πλοίων και των non-cash αποτιμήσεων παραγώγων. Δύο λεπτομέρειες που ξεφεύγουν εύκολα: (i) το gap Q2 μεταξύ reported ($198,3 εκ.) και ordinary ($197,0 εκ.) είναι μόλις $1,3 εκατ. (non-cash derivative gain) — τα κέρδη του τριμήνου είναι σχεδόν εξ ολοκλήρου «καθαρά», ταμειακά κέρδη ναυλαγοράς· (ii) το κέρδος ~$34,2 εκατ. από την πώληση της DHT Bauhinia θα εγγραφεί στο <strong>Q3</strong> αλλά <em>δεν θα διανεμηθεί</em> — χτίζει NAV αντί για μέρισμα, όπως και τα $60 εκατ. του Q1.</p>
+
+<h3>3.2 Q3 2026: ήδη «κλειδωμένο» ισχυρό</h3>
+<div class="kpi-row">
+  <div class="kpi"><div class="v">58%</div><div class="l">των spot ημερών Q3 κλεισμένο στα <b>$152.700/ημέρα</b> (d-t-d), 05/08</div></div>
+  <div class="kpi"><div class="v">79%</div><div class="l">του συνόλου ημερών (spot+T/C) στα $104.400/ημέρα</div></div>
+  <div class="kpi"><div class="v">$139,7k</div><div class="l">το αντίστοιχο booking στις 13/07 — η αγορά δυνάμωσε μέσα στο τρίμηνο</div></div>
+  <div class="kpi"><div class="v">~$1,0–1,2</div><div class="l">εκτίμηση C. για ordinary EPS/μέρισμα Q3 στα τρέχοντα bookings</div></div>
+</div>
+<p class="source">Πηγή: Δελτία DHT 13/07 &amp; 05/08/2026. Η εκτίμηση Q3 είναι ενδεικτική (C.): ~1.029 spot ημέρες, εναπομένουσες στο εύρος $120–200k, T/C book ~$95k, breakeven Η2 $29.700 (P&amp;L).</p>
+
+<!-- ═══════════════ SECTION 4 ═══════════════ -->
+<div class="section"></div>
+<h2>4. Οικονομική Ιστορία &amp; Ισολογισμός <span style="float:right;font-size:10pt;color:#3B4557">Βαθμός: 75/100 · Βάρος 18%</span></h2>
+
+<p class="caption">Πίνακας 4 — Επτά χρόνια σε μία ματιά (2019–2025 + H1 2026)</p>
+<table>
+<thead><tr><th>Έτος</th><th class="num">Έσοδα ($ εκ.)</th><th class="num">Adj. EBITDA ($ εκ.)</th><th class="num">Καθαρά κέρδη ($ εκ.)</th><th class="num">EPS ($)</th><th class="num">Μερίσματα/μτχ ($)</th></tr></thead>
+<tbody>
+<tr><td>2019</td><td class="num">535,1</td><td class="num">254,5</td><td class="num">73,7</td><td class="num">0,51</td><td class="num">0,47</td></tr>
+<tr><td>2020 (COVID super-spike)</td><td class="num">691,0</td><td class="num">450,4</td><td class="num">266,3</td><td class="num">1,71</td><td class="num">1,08</td></tr>
+<tr><td>2021 (πάτος κύκλου)</td><td class="num">295,9</td><td class="num">113,7</td><td class="num down">−11,5</td><td class="num down">−0,07</td><td class="num">0,10</td></tr>
+<tr><td>2022</td><td class="num">450,4</td><td class="num">177,9</td><td class="num">62,0</td><td class="num">0,37</td><td class="num">0,48</td></tr>
+<tr><td>2023</td><td class="num">556,1</td><td class="num">302,0</td><td class="num">161,4</td><td class="num">0,99</td><td class="num">0,99</td></tr>
+<tr><td>2024</td><td class="num">567,8</td><td class="num">294,6</td><td class="num">181,4</td><td class="num">1,12</td><td class="num">0,95</td></tr>
+<tr><td>2025</td><td class="num">497,2</td><td class="num">278,4</td><td class="num">211,0</td><td class="num">1,31</td><td class="num">0,98</td></tr>
+<tr><td><strong>H1 2026</strong></td><td class="num"><strong>471,1</strong></td><td class="num"><strong>364,3</strong></td><td class="num"><strong>362,9</strong></td><td class="num"><strong>2,25</strong></td><td class="num"><strong>1,86</strong></td></tr>
+</tbody>
+</table>
+<p class="source">Πηγή: Δελτία Q4 εκάστου έτους (GlobeNewswire/6-K)· 20-F FY2025 (κατατέθηκε 19/03/2026). Δείτε τη κυκλικότητα: από ζημιές το 2021 σε $1,23/μτχ σε ένα μόνο τρίμηνο το 2026.</p>
+
+<h3>4.1 Ισολογισμός-φρούριο</h3>
+<p>Στις 30/06/2026: χρέος $434,8 εκατ. — cash $161,7 εκατ. = <strong>καθαρός δανεισμός $273 εκατ.</strong>, ήτοι $11,9 εκατ./πλοίο και <strong>μόχλευση 14,1% επί αγοραίων αξιών</strong>. Συνολική ρευστότητα $569 εκατ. Η πορεία απομόχλευσης είναι δομικό story: 42% leverage το 2019 → 19,7% το 2023 → 14,1% σήμερα. Το χρηματοδοτικό προφίλ αναβαθμίστηκε πλήρως το 2025–26: νέο facility $308,4 εκατ. (SOFR+1,32%, 12ετία, προφίλ 20ετίας) για τα νεότευκτα και νέο reducing RCF $250 εκατ. (06/2026, SOFR+135bp, λήξη 2033, +$250 εκατ. accordion) από τον σκληρό πυρήνα των ναυτιλιακών τραπεζών (Nordea, ING, DNB, ABN AMRO, CA-CIB, Danish Ship Finance, SEB) — <strong>spreads που προσιδιάζουν σε investment-grade βιομηχανική εταιρία, όχι σε spot tanker owner</strong>.</p>
+
+<div class="panel">
+<strong>Covenants (20-F FY2025):</strong> value-adjusted net worth ≥ $300 εκατ. και ≥25% των value-adjusted assets· ελεύθερα διαθέσιμα ≥ max($30 εκατ., 6% του χρέους)· αξία εξασφαλίσεων ≥135% του δανεισμού. Με στόλο αγοραίας αξίας ~$2,7–2,9 δισ. έναντι απαιτούμενων ~$587 εκατ. εξασφαλίσεων, οι αξίες πλοίων θα έπρεπε να πέσουν <strong>~75–80%</strong> για να απειληθεί covenant — πρακτικά αδιανόητο σενάριο. Η μερισματική πολιτική δεν έχει δανειακό περιορισμό σε κανένα ρεαλιστικό σενάριο. <span class="tagchip tag-est">C.</span>
+</div>
+
+<h3>4.2 Κόστος &amp; breakevens</h3>
+<p>Opex Q2: $18,6 εκατ. (~$8.900/πλοίο-ημέρα — υπολογισμός C.)· G&amp;A $5,6 εκατ. Για το H2 2026 η εταιρία δηλώνει <strong>P&amp;L breakeven $29.700/ημέρα και cash breakeven $22.600/ημέρα</strong>. Η διαφορά ~$7.100/ημέρα (αποσβέσεις πέραν ταμειακών) σημαίνει ότι ακόμη και με μηδενικά λογιστικά κέρδη, η DHT παράγει ~$57 εκατ. ετήσιο ελεύθερο ταμειακό απόθεμα για γενική εταιρική χρήση — αθόρυβο buffer που δεν φαίνεται στο EPS.</p>
+
+<div class="keep"><p class="caption">Διάγραμμα 1 — Τριμηνιαίο μέρισμα ανά μετοχή: η «έκρηξη» του 2026</p>
+<img class="figimg" src="chart_div.png" alt="Μερίσματα DHT"></div>
+<p class="source">Πηγή: IBKR corporate actions (26/08/2026) — 20 συνεχόμενα τρίμηνα στο δείγμα, 66 συνολικά από το 2010.</p>
+
+<!-- ═══════════════ SECTION 5 ═══════════════ -->
+<h2>5. Η Αγορά VLCC: Πόλεμος, Ορμούζ &amp; ο Κύκλος <span style="float:right;font-size:10pt;color:#3B4557">Βαθμός: 60/100 · Βάρος 9%</span></h2>
+
+<h3>5.1 Το καθοριστικό γεγονός</h3>
+<p>Από τις 28/02/2026 (έναρξη πολέμου ΗΠΑ/Ισραήλ–Ιράν) και το κλείσιμο των Στενών του Ορμούζ (02/03), η αγορά VLCC λειτουργεί σε καθεστώς έκτακτης ανάγκης: πάνω από <strong>~8 εκατ. bpd χάθηκαν</strong> από τα ~20 εκατ. bpd που διέρχονταν κανονικά, τα war-risk ασφάλιστρα εκτινάχθηκαν από 0,125–0,25% σε 2,5–5% της αξίας πλοίου στην κορύφωση, και το TD3C (MEG–Κίνα) έγραψε ιστορικό ρεκόρ $423.736/ημέρα (02/03), $469.000 σε φυσικό fixture (Ιούνιος) και <strong>WS570 / ~$585.000/ημέρα στις 21/08/2026</strong>. Χρονολόγιο-κλειδί: MOU ΗΠΑ–Ιράν 17/06 (ελπίδα ανοίγματος) → επανακλείσιμο 20–22/06 → επιθέσεις σε πλοία → επαναφορά ναυτικού αποκλεισμού από ΗΠΑ (μέσα Ιουλίου) → Kharg Island νεκρό από 31/07 (εξαγωγές Ιράν ~0) → «Operation Economic Outcast» (23–24/08) και μεσολάβηση Ομάν για «διάδρομο». Στις 16/08 η διέλευση ήταν στο <strong>1%</strong> του προπολεμικού όγκου.</p>
+
+<div class="panel warn">
+<strong>Η κρίσιμη απόχρωση που χάνεται στα πρωτοσέλιδα:</strong> το TD3C ~$585k είναι σε μεγάλο βαθμό «paper» αποτίμηση κινδύνου Ορμούζ με ελάχιστα φυσικά fixtures· ο μέσος όρος πραγματικών κερδών VLCC σε όλα τα δρομολόγια κινείται στα <strong>$170.000–200.000/ημέρα</strong> — και τα ton-miles είναι <span class="down">−14,5% y/y</span> (Jan–Jul), γιατί οι όγκοι MEG κατέρρευσαν (−36% liftings). Το ράλι πληρώνει τον κίνδυνο και την αναποτελεσματικότητα (Atlantic→Pacific 35% των φορτίων από 22%, Galveston–Ningbo = 2,6× απόσταση Ras Tanura–Ningbo), όχι τη ζήτηση. Αυτό το καθιστά εύθραυστο σε ειρήνευση — αλλά και εκρηκτικά ανθεκτικό όσο η κρίση διαρκεί.
+</div>
+
+<h3>5.2 Προσφορά: το ισοζύγιο τρόμου του orderbook</h3>
+<p class="caption">Πίνακας 5 — Δομή προσφοράς VLCC (μέσα 2026)</p>
+<table>
+<thead><tr><th>Παράμετρος</th><th>Τιμή</th><th>Ανάγνωση</th></tr></thead>
+<tbody>
+<tr><td>Orderbook</td><td class="num">262 VLCC ≈ <strong>35% του στόλου</strong> (2023: ~2%)</td><td class="down">Ρεκόρ 60ετίας — η κλασική υπογραφή κορυφής κύκλου</td></tr>
+<tr><td>Παραγγελίες H1 2026</td><td class="num">177 VLCC / 54,5 εκατ. dwt</td><td class="down">Όλο το προηγούμενο ρεκόρ έτους (2006) × 1,7 σε ένα εξάμηνο</td></tr>
+<tr><td>Παραδόσεις 2026</td><td class="num">~30–38 πλοία</td><td class="up">Ελάχιστες — η στενότητα του 2026–27 είναι πραγματική</td></tr>
+<tr><td>Ναυπηγικές θέσεις</td><td>Κορεάτικα yards γεμάτα ως 2028· πωλούνται 2029–2030</td><td>Το κύμα χτυπά από το 2027–28 και μετά</td></tr>
+<tr><td>Ηλικίες</td><td class="num">~44% του στόλου &gt;15 ετών· ~130 πλοία &gt;20 ετών</td><td class="up">Τεράστια ανάγκη αντικατάστασης απορροφά μέρος του κύματος</td></tr>
+<tr><td>Σκραπ</td><td>Μόλις έληξε «ξηρασία» 512 ημερών· 58% των πωλήσεων για σκραπ = κυρωμένα πλοία</td><td>Το OFAC «off-ramp» (διαγραφή κυρώσεων μετά από σκραπ) επιταχύνει έξοδο σκιώδους στόλου</td></tr>
+<tr><td>Κυρωμένα/σκιώδης στόλος</td><td class="num">~200 dark VLCC, ~94 υπό κυρώσεις (~18% στόλου)</td><td class="up">Εκτός mainstream αγοράς — de facto μείωση προσφοράς</td></tr>
+</tbody>
+</table>
+<p class="source">Πηγές: Clarksons/MSI/BIMCO μέσω Splash247, safety4sea, Tankers International, Insurance Journal (06–08/2026) — δευτερογενείς, <span class="tagchip tag-web">WEB</span>.</p>
+
+<h3>5.3 Ζήτηση &amp; 2027</h3>
+<p>Το 2026 η ζήτηση πετρελαίου είναι πολεμικά συμπιεσμένη (IEA: −1,6 εκατ. bpd· εισαγωγές Κίνας Q2 −32% q/q στα 8,1 εκατ. bpd, με σκόπιμη εκφόρτωση αποθεμάτων). Το guidance για το 2027 όμως είναι δομικά ευνοϊκό: IEA +2,4 εκατ. bpd ζήτηση και <strong>+8,3 εκατ. bpd προσφορά</strong> (επανεκκίνηση MEG), πλήρης επαναφορά ποσοστώσεων OPEC+ (ολοκληρώθηκε η απόσυρση του 1,65 εκατ. bpd τον Σεπτέμβριο), και κινεζικό σύστημα αποθεμάτων ~1,2 δισ. βαρελιών που θα χρειαστεί επιθετικό restocking. Δηλαδή: <strong>αν έρθει η ειρήνη, το risk premium ξεφουσκώνει αλλά οι όγκοι/ton-miles επιστρέφουν</strong> — ο κύκλος δεν τελειώνει με τη λύση του Ορμούζ, αλλάζει καύσιμο. Το πραγματικό τέλος γράφεται το 2027–2030, όταν παραδοθεί το orderbook.</p>
+
+<p>Ρυθμιστικά: EU ETS 100% από το 2026 (~$319/t VLSFO), FuelEU, IMO Net-Zero Framework (υιοθέτηση Δεκ. 2026), CII που αποκλείει τα γηραιά πλοία από τα vetting — όλα υπέρ νέων, scrubber-fitted στόλων όπως της DHT.</p>
+
+<!-- ═══════════════ SECTION 6 ═══════════════ -->
+<div class="section"></div>
+<h2>6. Μετοχική Βάση, Διοίκηση &amp; Governance <span style="float:right;font-size:10pt;color:#3B4557">Βαθμός: 70/100 · Βάρος 9%</span></h2>
+
+<h3>6.1 Ποιος έχει το χαρτί</h3>
+<p class="caption">Πίνακας 6 — Θεσμική βάση (13F 31/12/2025) &amp; short interest</p>
+<table>
+<thead><tr><th>Μέτοχος</th><th class="num">Μετοχές (εκ.)</th><th class="num">%</th><th>Σχόλιο</th></tr></thead>
+<tbody>
+<tr><td>FMR LLC (Fidelity)</td><td class="num">24,1</td><td class="num">15,0%</td><td>Ενεργός διαχειριστής ως κορυφαίος μέτοχος — όχι παθητικό χαρτί</td></tr>
+<tr><td>Dimensional Fund Advisors</td><td class="num">10,4</td><td class="num">6,5%</td><td>Systematic value</td></tr>
+<tr><td>DME Capital Management</td><td class="num">7,4</td><td class="num">4,6%</td><td>Hedge fund</td></tr>
+<tr><td>BlackRock</td><td class="num">7,1</td><td class="num">4,4%</td><td>Κυρίως index</td></tr>
+<tr><td>American Century</td><td class="num">5,0</td><td class="num">3,1%</td><td></td></tr>
+<tr><td>Σύνολο θεσμικών</td><td class="num">—</td><td class="num">~70%</td><td>342 ιδρύματα</td></tr>
+<tr><td>Short interest (10/08/2026)</td><td class="num">~9,6</td><td class="num">~6% των μετοχών</td><td>Μέτριο — όχι crowded short παρά το +67% YTD</td></tr>
+</tbody>
+</table>
+<p class="source">Πηγή: GuruFocus/Nasdaq/Fintel (13F 31/12/2025· short interest 10/08/2026) <span class="tagchip tag-web">WEB</span> — προς επιβεβαίωση με Q2 2026 13F. Κανένας &gt;5% activist δεν εντοπίστηκε· η BW Group (ιστορικός στρατηγικός μέτοχος από το deal του 2017) έχει προ πολλού αποεπενδύσει [προς επιβεβαίωση στο 20-F].</p>
+
+<h3>6.2 Διοίκηση &amp; τα ψιλά γράμματα</h3>
+<p><strong>Svein Moxnes Harfjeld</strong> (President &amp; CEO από το 2010, πρώην co-CEO με τον Trygve Munthe έως το 2022) και <strong>Laila C. Halvorsen</strong> (CFO). Πρόεδρος ΔΣ: Erik A. Lind. Track record: εξαιρετικό (βλ. §2.2). Σημεία που απαιτούν προσοχή και δεν τα βλέπει κανείς με την πρώτη ματιά:</p>
+<p>• <strong>Foreign Private Issuer:</strong> η DHT δεν υποβάλλει Form 4 — οι συναλλαγές insiders δεν φαίνονται στο «tape»· δημοσιοποιούνται μόνο εθελοντικά με δελτία. Καμία αγορά/πώληση διοίκησης δεν εντοπίστηκε δημοσιευμένη το 2025–26 (απουσία στοιχείων ≠ απουσία συναλλαγών).<br>
+• <strong>13/10/2025: ο CEO εντάχθηκε στο ΔΣ</strong> — σήμα εμπιστοσύνης αλλά και μείωση ανεξαρτησίας του board.<br>
+• <strong>Marshall Islands δίκαιο + ιστορικό poison pill (2017)</strong> + blank-check preferred: αρχιτεκτονική άμυνας απέναντι σε επιθετικές κινήσεις — δοκιμασμένη όταν η Frontline του Fredriksen επιχείρησε το 2017 και η DHT απάντησε με το deal BW (11 VLCC έναντι μετοχών). Θετικό για ανεξαρτησία, αρνητικό για M&amp;A premium optionality. Τρέχον καθεστώς του rights plan: προς επιβεβαίωση στο 20-F.<br>
+• <strong>Buybacks:</strong> 2021: 5,5 εκ. μτχ @ $5,82 · 2022: 4,3 εκ. @ $5,71 · 2023: 2,2 εκ. @ $8,25–8,72 · 12/2024: 1,48 εκ. @ $8,89 — και <em>τίποτα</em> από τότε που η μετοχή ξεπέρασε το NAV. Η ασυμμετρία αυτή είναι από μόνη της ένα ποιοτικό σήμα αποτίμησης: <strong>η ίδια η εταιρία αγόραζε κάτω από $9 και δεν αγοράζει στα $19</strong>.</p>
+
+<!-- ═══════════════ SECTION 7 ═══════════════ -->
+<div class="section"></div>
+<h2>7. Αποτίμηση <span style="float:right;font-size:10pt;color:#3B4557">Βαθμός: 55/100 · Βάρος 14%</span></h2>
+
+<h3>7.1 NAV: το κέντρο βάρους της ανάλυσης</h3>
+<p class="caption">Πίνακας 7 — Εκτίμηση καθαρής αξίας ενεργητικού (C., ενδεικτική)</p>
+<table>
+<thead><tr><th>Συνιστώσα</th><th class="num">Χαμηλό ($ εκ.)</th><th class="num">Υψηλό ($ εκ.)</th><th>Βάση</th></tr></thead>
+<tbody>
+<tr><td>4 × 2026-built (resale benchmark $168 εκ.)</td><td class="num">620</td><td class="num">672</td><td>Clarksons resale/5ετίας curve</td></tr>
+<tr><td>6 × 2018-built</td><td class="num">720</td><td class="num">810</td><td>Παρεμβολή 5ετούς $143 εκ. / 10ετούς $113 εκ.</td></tr>
+<tr><td>8 × 2015–2016</td><td class="num">840</td><td class="num">944</td><td>10–11 ετών ~$105–118 εκ.</td></tr>
+<tr><td>5 × 2011–2012</td><td class="num">410</td><td class="num">475</td><td>14–15 ετών ~$82–95 εκ.</td></tr>
+<tr><td>Στόλος συνολικά</td><td class="num"><strong>2.590</strong></td><td class="num"><strong>2.901</strong></td><td>Έναντι book value ~$1,3–1,4 δισ. — «κρυφή» υπεραξία ~$1,3–1,5 δισ.</td></tr>
+<tr><td>+ Ταμείο &amp; λοιπά κυκλοφορούντα</td><td class="num">312</td><td class="num">312</td><td>cash $161,7 + λοιπά ~$150</td></tr>
+<tr><td>− Σύνολο υποχρεώσεων</td><td class="num">−478</td><td class="num">−478</td><td>εκ των οποίων χρέος $434,8</td></tr>
+<tr><td><strong>NAV</strong></td><td class="num"><strong>2.423</strong></td><td class="num"><strong>2.734</strong></td><td><strong>$15,0 – $17,0 /μετοχή</strong></td></tr>
+<tr><td><strong>P/NAV @ $19,25</strong></td><td class="num" colspan="2"><strong>1,13× – 1,28×</strong></td><td>Company-implied άγκυρα (leverage 14,1% MTM): NAV ~$16,2 → P/NAV ~1,19×</td></tr>
+</tbody>
+</table>
+<p class="source">Υπολογισμός C. <span class="tagchip tag-est">C.</span> βάσει broker marks Αυγ. 2026 (5ετές $143 εκ., 10ετές $113 εκ., resale $168 εκ. — Hellenic Shipping News/Splash/Clarksons <span class="tagchip tag-web">WEB</span>) και ισολογισμού 30/06 <span class="tagchip tag-co">6-K</span>. Ενδεικτικό εύρος — απαιτεί επαλήθευση με επίσημες αποτιμήσεις (VesselsValue/Clarksons).</p>
+
+<div class="panel warn">
+<strong>Γιατί έχει σημασία:</strong> Η DHT ιστορικά διαπραγματευόταν 0,7–1,0× NAV· σήμερα ~1,2×. Δεν είναι παράλογο — η αγορά κεφαλαιοποιεί το κλειδωμένο cash flow και το franchise — αλλά σημαίνει ότι <strong>το χαρτί δεν προσφέρει πλέον asset-backed προστασία</strong>: αν οι αξίες πλοίων επιστρέψουν στα επίπεδα Δεκ. 2025 (5ετές $118 εκ., −17%), το NAV πάει προς ~$13, και το 1,0× NAV προς $13–14. Η ασφάλεια είναι πλέον στο μέρισμα και στην ταχύτητα διανομής, όχι στον «χάλυβα».
+</div>
+
+<h3>7.2 Earnings power &amp; τι τιμολογείται</h3>
+<p class="caption">Πίνακας 8 — Σενάρια ετησιοποιημένου «ordinary» EPS = μερίσματος (C., ενδεικτικά)</p>
+<table>
+<thead><tr><th>Σενάριο (spot TCE)</th><th class="num">TCE έσοδα ($ εκ.)</th><th class="num">EBITDA ($ εκ.)</th><th class="num">EPS≈DPS ($)</th><th class="num">Απόδοση @ $19,25</th></tr></thead>
+<tbody>
+<tr><td>Q2 2026 run-rate ($162,6k)</td><td class="num">1.024</td><td class="num">927</td><td class="num">4,89</td><td class="num up">25,4%</td></tr>
+<tr><td>Q3 2026 booked area ($150k)</td><td class="num">969</td><td class="num">872</td><td class="num">4,55</td><td class="num up">23,6%</td></tr>
+<tr><td>Ισχυρή ομαλοποίηση ($100k)</td><td class="num">724</td><td class="num">627</td><td class="num">3,04</td><td class="num up">15,8%</td></tr>
+<tr><td>Mid-cycle — προπολεμικό consensus ($67,5k)</td><td class="num">493</td><td class="num">396</td><td class="num">1,60</td><td class="num">8,3%</td></tr>
+<tr><td>Μέσος όρος 2024–25 ($45k)</td><td class="num">361</td><td class="num">264</td><td class="num">0,78</td><td class="num caution">4,1%</td></tr>
+<tr><td>Ζώνη P&amp;L breakeven ($30k)</td><td class="num">280</td><td class="num">183</td><td class="num">0,28</td><td class="num down">1,5%</td></tr>
+</tbody>
+</table>
+<p class="source">Υπολογισμός C. <span class="tagchip tag-est">C.</span>: ~8.030 ημέρες εσόδων/έτος (51% spot), T/C book αναπροσαρμοζόμενο ανά σενάριο, opex/G&amp;A/αποσβέσεις/τόκοι από εταιρικά δεδομένα. Επαλήθευση μοντέλου: στο πραγματικό μείγμα Q2 2026 αναπαράγει ακριβώς το $1,22/τρίμηνο. Ευαισθησία: κάθε ±$10.000/ημέρα στο spot ≈ ±$0,25 EPS ετησίως (±$0,50 σε όλο τον στόλο).</p>
+
+<div class="keep"><p class="caption">Διάγραμμα 2 — Μερισματική απόδοση ανά επίπεδο spot</p>
+<img class="figimg" src="chart_sens.png" alt="Sensitivity"></div>
+<p class="source">Εκτίμηση C. — το σημείο ισορροπίας όπου η απόδοση συναντά το trailing 12,7% είναι spot ~ $95–100k/ημέρα: ό,τι πάνω από εκεί, η αγορά το «χαρίζει».</p>
+
+<p><strong>Ανάγνωση:</strong> Στα $19,25 η αγορά προεξοφλεί βιώσιμο μέρισμα ~$1,90–2,40 (σε απαιτούμενη απόδοση 10–12,5%) — δηλαδή spot κοντά στα $75–90k/ημέρα διατηρήσιμα, αρκετά πάνω από το προπολεμικό mid-cycle των $67,5k αλλά πολύ κάτω από τα τρέχοντα. Ενδιαφέρουσα ασυμμετρία στα παράγωγα: η put-call parity στα Δεκεμβρίου-26 δείχνει την αγορά options να τιμολογεί μέρισμα Q3 μόλις ~$0,43 (±0,30, ρηχά spreads) — έναντι ~$1,0–1,2 που υπονοούν τα ήδη κλεισμένα bookings. <strong>Αν η DHT απλώς παραδώσει ό,τι έχει ήδη κλείσει, το μέρισμα του Οκτωβρίου είναι θετική έκπληξη έναντι των παραγώγων.</strong> Το consensus PT (~$19,3–20,5) λέει το ίδιο με το P/NAV: ο δρόμος του εύκολου χρήματος έχει διανυθεί.</p>
+
+<h3>7.3 Συγκριτική εικόνα</h3>
+<p class="caption">Πίνακας 9 — Peers (επαληθευμένες στήλες IBKR, 25–26/08/2026)</p>
+<table>
+<thead><tr><th>Μετοχή</th><th class="num">Τιμή $</th><th class="num">YTD</th><th class="num">1Y</th><th class="num">Μερ. απόδοση</th><th class="num">HV30 / IV</th><th>Προφίλ</th></tr></thead>
+<tbody>
+<tr><td><strong>DHT</strong></td><td class="num">19,25</td><td class="num">+67%</td><td class="num">+66%</td><td class="num"><strong>12,7–13,7%</strong></td><td class="num">40% / 41%</td><td>Pure VLCC, ~50% T/C, μόχλευση 14% — «ο αμυντικός»</td></tr>
+<tr><td>Frontline (FRO)</td><td class="num">43,44</td><td class="num">+104%</td><td class="num">+108%</td><td class="num">7,2%</td><td class="num">38% / 53%</td><td>VLCC+Suezmax+LR2, υψηλή μόχλευση, υψηλό beta</td></tr>
+<tr><td>Intl Seaways (INSW)</td><td class="num">99,05</td><td class="num">+110%</td><td class="num">+118%</td><td class="num">8,4%</td><td class="num">36% / 46%</td><td>Crude+products, διαφοροποιημένη</td></tr>
+<tr><td>Teekay Tankers (TNK)</td><td class="num">90,03</td><td class="num">+72%</td><td class="num">+83%</td><td class="num">1,1%</td><td class="num">35% / 37%</td><td>Suezmax/Aframax, θησαυρίζει cash αντί να διανέμει</td></tr>
+<tr><td>Okeanis (ECO)</td><td class="num">65,04</td><td class="num">+106%</td><td class="num">+136%</td><td class="num"><strong>17,0%</strong></td><td class="num">47% / 47%</td><td>Ο πλησιέστερος συγκρίσιμος: eco-VLCC, σχεδόν 100% spot, μοχλευμένος</td></tr>
+<tr><td>Nordic American (NAT)</td><td class="num">6,90</td><td class="num">+107%</td><td class="num">—</td><td class="num">9,0%</td><td class="num">37% / —</td><td>Suezmax μόνο</td></tr>
+<tr><td>Tsakos (TEN)</td><td class="num">42,27</td><td class="num">+92%</td><td class="num">—</td><td class="num">4,7%</td><td class="num">33% / —</td><td>Διαφοροποιημένη, βαριά T/C κάλυψη</td></tr>
+</tbody>
+</table>
+<p class="source">Πηγή: IBKR snapshots/ιστορικά (26/08/2026) <span class="tagchip tag-ibkr">IBKR</span>. Θεμελιώδη πολλαπλάσια peers (P/NAV, EV/EBITDA) δεν παρατίθενται — δεν επαληθεύτηκαν επαρκώς σε αυτή τη συνεδρία.</p>
+
+<div class="keep"><p class="caption">Διάγραμμα 3 — Σχετική απόδοση 12μήνου</p>
+<img class="figimg" src="chart_peers.png" alt="Peers"></div>
+<p class="source">Πηγή: IBKR. Η υστέρηση της DHT είναι το κόστος του χαμηλού βήτα — και ταυτόχρονα το επιχείρημα σχετικής αξίας αν πιστεύει κανείς σε συνέχιση του κύκλου με λιγότερο ρίσκο.</p>
+
+<!-- ═══════════════ SECTION 8 ═══════════════ -->
+<h2>8. Τεχνική Εικόνα <span style="float:right;font-size:10pt;color:#3B4557">Βαθμός: 70/100 · Βάρος 4,5%</span></h2>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="v">$19,17</div><div class="l">Κλείσιμο 25/08 — +1,4% πάνω από SMA20 ($18,90)</div></div>
+  <div class="kpi"><div class="v">+4,4%</div><div class="l">έναντι SMA50 ($18,36) · +16,8% έναντι SMA200 ($16,42)</div></div>
+  <div class="kpi"><div class="v">53,8</div><div class="l">RSI(14) — ουδέτερο, όχι υπεραγορασμένο</div></div>
+  <div class="kpi"><div class="v">Bullish</div><div class="l">MACD πάνω από signal · max drawdown 12μήνου −17,4%</div></div>
+</div>
+
+<p><strong>Δομή αγοράς (Rayner framework):</strong> Πλήρης ανοδική δομή — advancing stage από τον Φεβρουάριο 2026, higher highs/higher lows, με τη ζώνη $16,0–16,7 (Ιούνιος + διπλός πάτος Ιουλίου) ως κύρια area of value/στήριξη, ενδιάμεση στήριξη $18,1–18,4 (SMA50 + πυκνότητα συναλλαγών Αυγούστου) και αντίσταση το 52W high $20,6. Η μετοχή «χώνεψε» το ex-dividend $1,22 (17/08) σχεδόν αδιάφορα — ένδειξη ζήτησης. Όγκος υγιής, χωρίς κορυφωτικό κλιμάκωμα. Setup: ανοδικό αλλά extended έναντι SMA200· ο λόγος απόδοσης/κινδύνου ευνοεί αγορές στη στήριξη, όχι breakout chasing στα $20,6.</p>
+
+<div class="keep"><p class="caption">Διάγραμμα 4 — 12μηνη εικόνα με κινητούς μέσους &amp; όγκο</p>
+<img class="figimg" src="chart_1y.png" alt="1Y"></div>
+<div class="keep"><p class="caption">Διάγραμμα 5 — Πενταετία: από τα $5 στο ράλι των $20</p>
+<img class="figimg" src="chart_5y.png" alt="5Y"></div>
+<p class="source">Πηγή: IBKR (26/08/2026), υπολογισμοί C.</p>
+
+<!-- ═══════════════ SECTION 9 ═══════════════ -->
+<div class="section"></div>
+<h2>9. Μητρώο Κινδύνων <span style="float:right;font-size:10pt;color:#3B4557">Βαθμός: 60/100 · Βάρος 9%</span></h2>
+
+<p class="caption">Πίνακας 10 — Risk register (κατάταξη κατά επικινδυνότητα)</p>
+<table>
+<thead><tr><th>#</th><th>Κίνδυνος</th><th class="num">Πιθαν.</th><th class="num">Επίπτωση</th><th>Σχόλιο / αντιστάθμιση</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>Ειρήνευση/άνοιγμα Ορμούζ → κατάρρευση risk premium</strong></td><td class="num">Μ/Υ</td><td class="num">Υψηλή</td><td>Ο Μάιος 2026 έδειξε το μέγεθος: &lt;$100k σε μία εβδομάδα σε απλή προσδοκία. Αντιστάθμιση: 50% T/C κάλυψη, κλειδωμένα Q3 bookings, restocking demand μετά. Το χαρτί θα υποχωρούσε — εκτίμηση C.: προς $15–16 (NAV zone) σε πρώτη αντίδραση.</td></tr>
+<tr><td>2</td><td><strong>Orderbook 35% — παραδόσεις 2027–2030</strong></td><td class="num">Βέβαιη</td><td class="num">Υψηλή (μεσοπρ.)</td><td>Η ωρίμανση του κύκλου είναι ημερολογιακό γεγονός. Μετριασμός: ηλικιακή έξοδος (44% στόλου &gt;15 ετών), σκραπ σκιώδους στόλου, CII. Η DHT δεν χρειάζεται να παραγγείλει — έχει ήδη νέο στόλο.</td></tr>
+<tr><td>3</td><td>Κλιμάκωση πολέμου — πλήγμα σε πλοίο/πλήρωμα, ασφάλιστρα</td><td class="num">Μ</td><td class="num">Μέτρια-Υψηλή</td><td>Η DHT δήλωσε ότι απέφυγε τον Persian Gulf στο Q2 για λόγους ασφαλείας (παράφραση call — προς επιβεβαίωση) — αφήνει premium στο τραπέζι, προστατεύει το tail risk.</td></tr>
+<tr><td>4</td><td>Ύφεση ζήτησης πετρελαίου / κατάρρευση τιμών αργού</td><td class="num">Μ</td><td class="num">Μέτρια</td><td>2026 ήδη −1,6 εκατ. bpd· ο κίνδυνος είναι το 2027 restocking να μην έρθει.</td></tr>
+<tr><td>5</td><td>Επιτόκια/χρηματοδότηση</td><td class="num">Χ</td><td class="num">Χαμηλή</td><td>SOFR+132–135bp, μόχλευση 14%, λήξεις 2033+· αμελητέο.</td></tr>
+<tr><td>6</td><td>Governance/FPI αδιαφάνεια (όχι Form 4, Marshall Islands, ιστορικό pill)</td><td class="num">—</td><td class="num">Χαμηλή</td><td>Δομικό χαρακτηριστικό· τιμολογείται ως μόνιμο μικρό discount.</td></tr>
+</tbody>
+</table>
+
+<div class="panel neg">
+<strong>Black swan:</strong> Ταυτόχρονη ειρήνευση + απότομη επιβράδυνση ζήτησης + εκκίνηση παραδόσεων orderbook το 2027 — το «2015 → 2018» σενάριο σε συμπίεση χρόνου: rates κάτω από $30k, αξίες πλοίων −30–40%, μέρισμα προς $0,10–0,30/τρίμηνο, μετοχή προς high single digits. Χαμηλή πιθανότητα στο 6–12μηνο, υπαρκτή στο 24–36μηνο. Το αντίθετο tail: κλείσιμο Ορμούζ επ' αόριστον + κλιμάκωση = TD3C άνω των $600k και EPS άνω των $5/έτος. Η κατανομή είναι διπλά παχύουρη — γι' αυτό το IV 40% με 4,7ο percentile 26 εβδομάδων μοιάζει φθηνό.
+</div>
+
+<h3>9.1 Ανάπτυξη &amp; προοπτική <span style="float:right;font-size:9pt;color:#3B4557">Βαθμός: 55/100 · Βάρος 9%</span></h3>
+<p>Η DHT δεν είναι growth story όγκων: ο στόλος σταθεροποιείται στα 23–24 πλοία (+Oryx το 2028), η «ανάπτυξη» είναι συνάρτηση rates και κύκλου. Οι φορείς αξίας της επόμενης 5ετίας: (i) πλήρης αξιοποίηση του νέου, αποδοτικότερου στόλου· (ii) το 2027 restocking/volume recovery· (iii) αντικυκλική οπτιονικότητα — με $569 εκατ. ρευστότητα, η DHT θα είναι αγοραστής assets στον επόμενο πάτο, όπως ήταν το 2021–24 στις μετοχές της. Δεν αποδίδουμε premium ανάπτυξης· αποδίδουμε αξία στην πειθαρχία.</p>
+
+<!-- ═══════════════ SECTION 10 ═══════════════ -->
+<div class="section"></div>
+<h2>10. Όσα Δεν Φαίνονται με την Πρώτη Ματιά</h2>
+
+<p class="caption">Πίνακας 11 — «Hidden insights» — η προστιθέμενη αξία της βαθιάς ανάγνωσης</p>
+<table>
+<thead><tr><th>#</th><th>Εύρημα</th><th>Γιατί έχει σημασία</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>Τα κέρδη πωλήσεων πλοίων δεν διανέμονται.</strong> Q1: $60 εκ.· Q3 (αναμ.): $34,2 εκ. από Bauhinia — εκτός μερισματικής βάσης.</td><td>~$0,58/μτχ το 2026 «σιωπηλά» reinvested στο NAV. Το πραγματικό payout του 2026 είναι ~75% των συνολικών κερδών — πιο συντηρητικό από το «100%» του τίτλου.</td></tr>
+<tr><td>2</td><td><strong>Η αγορά options τιμολογεί μέρισμα Q3 ~$0,43</strong> ενώ τα κλεισμένα bookings υπονοούν ~$1,0–1,2.</td><td>Θετική ασυμμετρία στο event του Οκτωβρίου· επίσης εξηγεί γιατί τα Dec calls μοιάζουν «φθηνά» σε forward βάση.</td></tr>
+<tr><td>3</td><td><strong>Πρώτη φορά premium στο NAV</strong> (~1,2×), με 5ετές πλοίο ακριβότερο από νεότευκτο και ρεκόρ 60ετίας στο resale premium.</td><td>Ιστορικά, όταν ο «χάλυβας» ξεπερνά το replacement cost, βρισκόμαστε στο ύστερο τρίτο του κύκλου. Ο δείκτης δεν προβλέπει το πότε — προειδοποιεί για το τι αγοράζεις.</td></tr>
+<tr><td>4</td><td><strong>Η ίδια η DHT σταμάτησε να αγοράζει μετοχές της πάνω από το NAV</strong> (τελευταίο buyback 12/2024 @ $8,89).</td><td>Revealed preference της διοίκησης για την εσωτερική αξία — συνεπής με το εύρος NAV $15–17.</td></tr>
+<tr><td>5</td><td><strong>Πούλησε πρώτη απ' όλους ΟΛΑ τα κινεζικής ναυπήγησης VLCC</strong> (Lotus/Peony, 04/2025) πριν τα USTR port fees.</td><td>Regulatory foresight με μετρήσιμο όφελος· ο στόλος είναι 100% «φιλικός» στα αμερικανικά λιμάνια — ανταγωνιστικό πλεονέκτημα στο νέο Atlantic-heavy trade.</td></tr>
+<tr><td>6</td><td><strong>Απέφυγε τον Persian Gulf το Q2</strong> ενώ άλλοι εισέπρατταν war premiums (παράφραση earnings call).</td><td>Το spot $162,6k επετεύχθη <em>χωρίς</em> τα πιο επικίνδυνα premium φορτία — ποιότητα κερδών + προστασία tail risk. Προς επιβεβαίωση στο transcript.</td></tr>
+<tr><td>7</td><td><strong>Κλείδωσε 1ετείς T/C $90–109k στα 5 γηραιότερα πλοία</strong> (Q1–Q2 2026) και 3ετή $75k στην Jaguar.</td><td>Πούλησε forward ακριβώς το κομμάτι του στόλου με το μεγαλύτερο age risk. Το $75k/3ετία είναι η καλύτερη διαθέσιμη άγκυρα για το πού τιμολογεί η αγορά το post-war mid-cycle (vs $67,5k προπολεμικό consensus).</td></tr>
+<tr><td>8</td><td><strong>FPI καθεστώς:</strong> όχι Form 4/proxy — insider συναλλαγές αόρατες· αμοιβές μόνο συγκεντρωτικά στο 20-F.</td><td>Το «καθαρό» ιστορικό insiders που δείχνουν τα screeners είναι artifact έλλειψης δεδομένων, όχι απόδειξη ευθυγράμμισης.</td></tr>
+<tr><td>9</td><td><strong>Μηδενική παρακράτηση ΗΠΑ στα μερίσματα</strong> (έκδοση Marshall Islands — όχι US-source income)· «more likely than not» όχι PFIC κατά το 20-F.</td><td>Για ελληνικά χαρτοφυλάκια: το gross μέρισμα φθάνει ακέραιο (φορολόγηση μόνο κατά την ελληνική νομοθεσία). Σημαντικό στα ~13% yield. Επιβεβαίωση με τον θεματοφύλακα.</td></tr>
+<tr><td>10</td><td><strong>Breakeven engineering:</strong> cash $22.600 vs P&amp;L $29.700 — τα $7,1k/ημέρα διαφορά ≈ $57 εκατ./έτος σιωπηλής ταμειακής δημιουργίας ακόμα και σε «μηδενικά» κέρδη.</td><td>Το μέρισμα μηδενίζει πρακτικά μόνο κάτω από ~$30k spot — επίπεδο που η αγορά είδε τελευταία φορά στο trough του 2021.</td></tr>
+<tr><td>11</td><td><strong>Πιθανή νέα εξαγορά 2018-built VLCC (δημοσίευμα 12/08/2026)</strong> — πιθανό αναδημοσίευμα του deal Nokota· δεν επιβεβαιώθηκε από εταιρικό δελτίο.</td><td>Αν είναι νέο deal (~$107–115 εκ.), δείχνει συνέχιση αγορών σε υψηλές τιμές — μικρή αλλαγή στο discipline narrative. Επιβεβαίωση απαραίτητη.</td></tr>
+<tr><td>12</td><td><strong>Ton-miles −14,5% y/y</strong> την ώρα του μεγαλύτερου rate ράλι στην ιστορία.</td><td>Η πιο αντισυμβατική αλήθεια του 2026: το ράλι δεν είναι ζήτηση, είναι τριβή. Λύση κρίσης = επιστροφή όγκων. Τα δύο αντισταθμίζονται μερικώς — γι' αυτό το «peace dip» μπορεί να είναι αγοράσιμο.</td></tr>
+</tbody>
+</table>
+
+<!-- ═══════════════ SECTION 11 ═══════════════ -->
+<div class="section"></div>
+<h2>11. Scorecard, Σύσταση &amp; Καταλύτες</h2>
+
+<p class="caption">Πίνακας 12 — E1 Multi-Factor Scorecard (βάρη κανονικοποιημένα στο 100)</p>
+<table>
+<thead><tr><th>Διάσταση</th><th class="num">Βάρος</th><th class="num">Βαθμός</th><th class="num">Σταθμ.</th><th>Οδηγός βαθμού</th></tr></thead>
+<tbody>
+<tr><td>Εταιρία &amp; επιχειρηματικό μοντέλο</td><td class="num">14%</td><td class="num">70</td><td class="num">9,8</td><td>Best-in-class operator, χωρίς δομικό moat (commodity)</td></tr>
+<tr><td>Οικονομικές καταστάσεις (5–7ετία)</td><td class="num">18%</td><td class="num">75</td><td class="num">13,5</td><td>Ρεκόρ κερδών, μόχλευση 14,1%, αλλά βαθιά κυκλικά έσοδα (2021: ζημιές)</td></tr>
+<tr><td>Αριθμοδείκτες</td><td class="num">9%</td><td class="num">75</td><td class="num">6,8</td><td>P/E 6,6×, ROE ~44%, yield 12,7% — όλα peak-cycle ποιότητας</td></tr>
+<tr><td>Κλάδος &amp; συνθήκες αγοράς</td><td class="num">9%</td><td class="num">60</td><td class="num">5,4</td><td>Super-spike σήμερα, ρεκόρ orderbook αύριο</td></tr>
+<tr><td>Κίνδυνοι (διαχείριση)</td><td class="num">9%</td><td class="num">60</td><td class="num">5,4</td><td>Άριστη εταιρική διαχείριση κινδύνου· ακραία εξωγενής έκθεση</td></tr>
+<tr><td>Δυναμικό ανάπτυξης</td><td class="num">9%</td><td class="num">55</td><td class="num">5,0</td><td>Rate story, όχι volume story· οπτιονικότητα αντικυκλικών κινήσεων</td></tr>
+<tr><td>Διοίκηση &amp; διακυβέρνηση</td><td class="num">9%</td><td class="num">70</td><td class="num">6,3</td><td>Κορυφαίο capital allocation· FPI αδιαφάνεια, εργαλεία άμυνας</td></tr>
+<tr><td>Αποτίμηση</td><td class="num">14%</td><td class="num">55</td><td class="num">7,7</td><td>Φθηνή σε earnings, premium σε NAV· consensus χωρίς upside</td></tr>
+<tr><td>Τεχνική εικόνα</td><td class="num">4,5%</td><td class="num">70</td><td class="num">3,2</td><td>Υγιής ανοδική δομή, extended έναντι SMA200</td></tr>
+<tr><td>Ειδήσεις &amp; εξελίξεις</td><td class="num">4,5%</td><td class="num">65</td><td class="num">2,9</td><td>Ρεκόρ αποτελεσμάτων· διωνυμική γεωπολιτική ροή</td></tr>
+<tr><td><strong>ΣΥΝΟΛΟ</strong></td><td class="num"><strong>100%</strong></td><td class="num"></td><td class="num"><strong>66,0</strong></td><td><strong>«Good» — θετική εικόνα, επιλεκτική είσοδος</strong></td></tr>
+</tbody>
+</table>
+<p class="source">Μεθοδολογία: Merit equity-analyst E1 (βάρη κανονικοποιημένα από το 110άρι σχήμα του template στο 100). Συντηρητική βαθμολόγηση — άγκυρα: ποιοτικό large-cap ≈ 75.</p>
+
+<h3>11.1 Σύσταση</h3>
+<div class="panel">
+<p><strong>HOLD / Συσσώρευση σε διορθώσεις — όχι επιθετική νέα θέση στα τρέχοντα.</strong></p>
+<p><strong>Για υφιστάμενες θέσεις:</strong> διακράτηση με είσπραξη της μερισματικής ροής· το Q3 (ανακοίνωση ~28/10) είναι ήδη ουσιαστικά κλειδωμένο ισχυρό. Λογική προστασίας: με IV στο 4,7ο percentile 26 εβδομάδων, οι Dec-26 puts (π.χ. $17–18) είναι ιστορικά φθηνή ασφάλεια έναντι του σεναρίου ειρήνευσης — η θέση «μετοχή + put» κλειδώνει μεγάλο μέρος της ασυμμετρίας.</p>
+<p><strong>Για νέες θέσεις:</strong> κλιμακωτή συσσώρευση στη ζώνη <strong>$16,5–17,5</strong> (P/NAV ~1,0–1,05×, στήριξη Ιουνίου/Ιουλίου, mid-cycle yield ~9–10%)· πλήρης θέση μόνο σε «peace dip» προς τη ζώνη NAV $15–16, όπου η ιστορική σχέση κινδύνου/απόδοσης γίνεται σαφώς ευνοϊκή λόγω του 2027 volume recovery.</p>
+<p><strong>Triggers αναβάθμισης σε BUY:</strong> (i) διόρθωση &gt;12% χωρίς επιδείνωση θεμελιωδών· (ii) επιβεβαίωση Q3 DPS ≥ $1,00· (iii) ένδειξη ότι το 2027 restocking ξεκινά με το orderbook ακόμη &lt;25% παραδομένο. <strong>Triggers υποβάθμισης σε SELL/AVOID:</strong> (i) οριστική συμφωνία Ορμούζ με τη μετοχή &gt;$19 (πώληση στην πρώτη αντίδραση)· (ii) νέο κύμα παραγγελιών από την ίδια τη DHT σε τρέχουσες τιμές ναυπήγησης· (iii) spot &lt;$60k με τη μετοχή ακόμη &gt;1,1× NAV.</p>
+</div>
+
+<div class="keep">
+<p class="caption">Πίνακας 13 — Ημερολόγιο καταλυτών</p>
+<table>
+<thead><tr><th>Γεγονός</th><th>Αναμενόμενη ημερομηνία</th><th class="num">Επίδραση</th><th>Κατεύθυνση</th></tr></thead>
+<tbody>
+<tr><td>Διαπραγματεύσεις Ορμούζ / μεσολάβηση Ομάν («corridor framework»)</td><td>Συνεχής ροή</td><td class="num">Πολύ υψηλή</td><td>Διωνυμική (±)</td></tr>
+<tr><td>Mid-quarter Business Update (μοτίβο: 14/01, 15/04, 13/07)</td><td>~μέσα Οκτωβρίου</td><td class="num">Μέτρια</td><td>+ (bookings)</td></tr>
+<tr><td>Αποτελέσματα Q3 2026 + μέρισμα (εκτ. C. ~$1,0–1,2 + εγγραφή gain Bauhinia)</td><td>~28/10/2026</td><td class="num">Υψηλή</td><td>+ έναντι options-implied</td></tr>
+<tr><td>Ex-dividend Q3</td><td>~μέσα Νοεμβρίου</td><td class="num">Μέτρια</td><td>—</td></tr>
+<tr><td>Χειμερινή εποχικότητα Q4 + OPEC+ πραγματικά βαρέλια</td><td>Νοε–Δεκ</td><td class="num">Μέτρια</td><td>+</td></tr>
+<tr><td>IMO MEPC — υιοθέτηση Net-Zero Framework</td><td>Δεκέμβριος 2026</td><td class="num">Χαμηλή-Μέτρια</td><td>+ (νέοι στόλοι)</td></tr>
+<tr><td>Παραδόσεις orderbook — επιτάχυνση</td><td>2027 H2+</td><td class="num">Υψηλή (δομική)</td><td>−</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ═══════════════ SECTION 12 ═══════════════ -->
+<div class="section"></div>
+<h2>12. Μεθοδολογία, Πηγές &amp; Όρια της Ανάλυσης</h2>
+
+<p><strong>Διαδικασία:</strong> Η ανάλυση συντάχθηκε στις 26/08/2026 με (α) live δεδομένα αγοράς από Interactive Brokers (τιμές, ιστορικά, μερίσματα, options, peers)· (β) πολυ-πρακτορική έρευνα 7 πεδίων με υποχρεωτική σήμανση πηγής ανά αριθμό και αντιπαραθετική επαλήθευση δείγματος 12 κρίσιμων μεγεθών (0 διαψεύσεις· τα μερίσματα $1,22/$0,64 επιβεβαιώθηκαν από δύο ανεξάρτητες πηγές)· (γ) υπολογισμούς C. (NAV, σενάρια, τεχνικοί δείκτες) με δηλωμένες παραδοχές.</p>
+
+<p class="caption">Πίνακας 14 — Κύριες πηγές</p>
+<table>
+<thead><tr><th>Κατηγορία</th><th>Πηγή</th></tr></thead>
+<tbody>
+<tr><td>Αγοραία δεδομένα (τιμές, μερίσματα, options, vol, peers)</td><td>Interactive Brokers MCP — snapshots &amp; ιστορικά 25–26/08/2026 [VERIFIED]</td></tr>
+<tr><td>Εταιρικά αποτελέσματα &amp; ανακοινώσεις</td><td>Δελτία DHT/GlobeNewswire &amp; SEC 6-K: Q2 2026 (05/08/2026, acc. 000095015726000847)· Business Update 13/07/2026· Q1 2026 (05/05/2026, acc. -000576)· Q4 2025 (04/02/2026)· 20-F FY2025 (19/03/2026, acc. 000114036126010407) — μέσω search extracts, οι εξαιρετικά κρίσιμοι αριθμοί διασταυρωμένοι σε ≥2 ανεξάρτητα αποτυπώματα</td></tr>
+<tr><td>Ναυλαγορά &amp; κλάδος</td><td>Baltic Exchange weekly (εβδ. 32–34), Fearnleys weekly, Lloyd's List, TradeWinds/Splash247, Clarksons/MSI/BIMCO (μέσω δευτερογενών), IEA OMR &amp; OPEC MOMR Αυγούστου 2026, CNBC/Al Jazeera (χρονολόγιο Ορμούζ)</td></tr>
+<tr><td>Μετοχική βάση / short interest / consensus</td><td>GuruFocus, Nasdaq, Fintel, stockanalysis, WallStreetZen, Investing.com (26/08/2026) [WEB — χαμηλότερη βεβαιότητα]</td></tr>
+</tbody>
+</table>
+
+<div class="panel warn">
+<strong>Όρια &amp; εκκρεμείς επαληθεύσεις (διαφάνεια):</strong> (1) Οι αριθμοί των εταιρικών δελτίων αντλήθηκαν από search extracts των πρωτογενών εγγράφων (το περιβάλλον απέκλειε την απευθείας ανάγνωση sec.gov/dhtankers.com) — συνιστάται δειγματοληπτική αντιπαραβολή με τα 6-K πριν από οποιαδήποτε θεσμική χρήση. (2) Το NAV είναι ενδεικτικό εύρος C. — όχι broker NAV. (3) Καθεστώς poison pill, θέσεις insiders, ταυτότητες ναυλωτών, per-vessel αποτιμήσεις: μη επιβεβαιωμένα. (4) Το δημοσίευμα εξαγοράς της 12/08/2026 χρήζει επιβεβαίωσης. (5) Πιθανή νέα, μη-δημόσια πληροφόρηση μετά τις 26/08/2026 δεν καλύπτεται.<br><br>
+⚠️ <strong>Πριν από οποιαδήποτε συναλλαγή, επιβεβαίωσε τα τρέχοντα μεγέθη (τιμή, ναύλοι, μέρισμα) σε αξιόπιστο τερματικό αγοράς.</strong>
+</div>
+
+<p class="source" style="margin-top:6mm">
+<em>Η ανάλυση αυτή έχει αποκλειστικά ενημερωτικό χαρακτήρα και δεν αποτελεί επενδυτική σύσταση κατά την έννοια του Ν. 4514/2018 (MiFID II) ούτε προτροπή για κατάρτιση συναλλαγών. Οι επενδύσεις σε κινητές αξίες ενέχουν κίνδυνο απώλειας κεφαλαίου. Οι εκτιμήσεις που σημειώνονται ως «εκτίμηση C.» είναι ενδεικτικοί υπολογισμοί βάσει δηλωμένων παραδοχών και όχι προβλέψεις. Merit Securities SA — Μέλος του Χρηματιστηρίου Αθηνών, εποπτευόμενη από την Επιτροπή Κεφαλαιαγοράς.</em>
+</p>
+
+</body>
+</html>
